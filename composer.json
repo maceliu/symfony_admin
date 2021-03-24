@@ -1,0 +1,14 @@
+{
+    "name": "maceliu/symfony_admin",
+    "description": "A admin base on symfony",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mace liu",
+            "email": "liubo@xianglin.cn"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
