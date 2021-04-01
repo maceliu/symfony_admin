@@ -8,6 +8,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use SymfonyAdmin\Entity\AdminUser;
+use SymfonyAdmin\Exception\Base\ServiceException;
 use SymfonyAdmin\Exception\CheckFailException;
 use SymfonyAdmin\Exception\ExceedLimitException;
 use SymfonyAdmin\Exception\NotExistException;
@@ -104,7 +105,7 @@ class AdminLoginService extends BaseService
      * @return string
      * @throws CheckFailException
      * @throws NotExistException
-     * @throws TransportExceptionInterface
+     * @throws ServiceException
      */
     public function findMyPassword(AdminUserRequest $userRequest): string
     {
@@ -131,12 +132,16 @@ class AdminLoginService extends BaseService
         $this->getRedisClient()->hSet(Keys::passwordCheckCode($adminUser->getId()), Keys::COUNT, 0);
         $this->getRedisClient()->expire(Keys::passwordCheckCode($adminUser->getId()), Keys::TEN_MIN_CACHE_TIME);
 
-        $email = (new Email())
-            ->from($_ENV['SYSTEM_EMAIL_ACCOUNT'])
-            ->to($adminUser->getEmail())
-            ->subject('后台用户密码找回')
-            ->html('<p>尊敬的用户您好，您正在进行密码找回操作，您的验证码是：' . $checkCode . '，此验证码10分钟内有效，如果不是您的找回密码操作，请立即联系系统管理员反馈！</p>');
-        $this->mailer->send($email);
+        try {
+            $email = (new Email())
+                ->from($_ENV['SYSTEM_EMAIL_ACCOUNT'])
+                ->to($adminUser->getEmail())
+                ->subject('后台用户密码找回')
+                ->html('<p>尊敬的用户您好，您正在进行密码找回操作，您的验证码是：' . $checkCode . '，此验证码10分钟内有效，如果不是您的找回密码操作，请立即联系系统管理员反馈！</p>');
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            throw new ServiceException('邮件发送失败，失败代码：' . $e->getCode());
+        }
 
         return '邮件已发送至' . $adminUser->getEmail();
     }
