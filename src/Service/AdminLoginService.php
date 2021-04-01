@@ -38,6 +38,7 @@ class AdminLoginService extends BaseService
 
     public function __construct(ManagerRegistry $doctrine, LoggerInterface $logger, MailerInterface $mailer)
     {
+        $this->mailer = $mailer;
         $this->logger = $logger;
         parent::__construct($doctrine);
     }
