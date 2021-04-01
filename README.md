@@ -20,8 +20,6 @@ symfony_admin:
 config/service.yaml
 
 ```
-parameters:
-
 services:
     # .....your other config.......
     
@@ -35,6 +33,21 @@ services:
         
 ```
 
-### 4. Install db data
+### 4.Add doctrine config
+config/packages/doctrine.yaml
+
+```
+doctrine:
+    orm:
+        mappings:
+            SymfonyAdmin:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/vendor/maceliu/symfony_admin/src/Entity'
+                prefix: 'SymfonyAdmin\Entity'
+                alias: App
+```
+
+### 5. Install db data
 
 Execute the SQL statements in the install.sql in your database
