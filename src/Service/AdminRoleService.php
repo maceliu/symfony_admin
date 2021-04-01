@@ -85,7 +85,7 @@ class AdminRoleService extends BaseService
         $adminRole = new AdminRole();
         $adminRole->setRoleName($adminRoleRequest->getRoleName());
         $adminRole->setRoleCode($adminRoleRequest->getRoleCode());
-        $adminRole->setParentId($adminAuth->getAdminUser()->getId());
+        $adminRole->setParentId($adminAuth->getAdminUser()->getRoleId());
         $em->persist($adminRole);
         $em->flush();
         return $adminRole->getApiFormat();

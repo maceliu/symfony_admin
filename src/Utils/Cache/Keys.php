@@ -14,7 +14,11 @@ class Keys
 
     const OPEN_API_TOKEN_EXPIRE_TIME = 86400;
 
-    static function adminUserLogin($userId): string
+    const CHECK_CODE = 'checkCode';
+
+    const COUNT = 'count';
+
+    static function adminUserLogin(int $userId): string
     {
         return CommonUtils::getAppName() . '_admin_user_login_info_' . $userId;
     }
@@ -22,5 +26,10 @@ class Keys
     static function openApiToken(string $accessToken): string
     {
         return CommonUtils::getAppName() .'_admin_open_api_access_token_' . $accessToken;
+    }
+
+    static function passwordCheckCode(int $userId): string
+    {
+        return CommonUtils::getAppName() .'_admin_find_my_pass_' . $userId;
     }
 }

@@ -4,6 +4,8 @@
 namespace SymfonyAdmin\Service;
 
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use SymfonyAdmin\Entity\AdminAuth;
 use SymfonyAdmin\Entity\AdminUser;
 use SymfonyAdmin\Exception\CheckFailException;
@@ -14,6 +16,7 @@ use SymfonyAdmin\Request\AdminUserRequest;
 use SymfonyAdmin\Service\Base\BaseService;
 use SymfonyAdmin\Service\Base\CurdTrait;
 use SymfonyAdmin\Utils\Cache\Keys;
+use SymfonyAdmin\Utils\CommonUtils;
 use SymfonyAdmin\Utils\Enum\AdminLoginTypeEnum;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
 use DateTime;
@@ -29,7 +32,10 @@ class AdminUserService extends BaseService
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(ManagerRegistry $doctrine, LoggerInterface $logger)
+    /** @var MailerInterface */
+    private $mailer;
+
+    public function __construct(ManagerRegistry $doctrine, LoggerInterface $logger, MailerInterface $mailer)
     {
         $this->logger = $logger;
         parent::__construct($doctrine);
@@ -56,62 +62,6 @@ class AdminUserService extends BaseService
         }
 
         return $adminUser;
-    }
-
-    /**
-     * @param AdminUserRequest $userRequest
-     * @param string $loginType
-     * @return array
-     * @throws CheckFailException
-     * @throws NotExistException
-     * @throws ReflectionException
-     */
-    public function login(AdminUserRequest $userRequest, string $loginType = AdminLoginTypeEnum::ADMIN): array
-    {
-        $entityManager = $this->doctrine->getManager();
-
-        $adminUserRepo = $this->getAdminUserRepo();
-        $adminUser = $adminUserRepo->findOneByUsername($userRequest->getUsername());
-        if (!$adminUser) {
-            throw new NotExistException('用户不存在');
-        }
-
-        if ($adminUser->getStatus() == StatusEnum::OFF) {
-            throw new NotExistException('用户已被禁用');
-        }
-
-        $requestPass = self::makeUserPassword($userRequest->getPassword(), $adminUser->getUsername());
-        $this->logger->info('Password | ' . $userRequest->getUsername() . ' ： ' . $requestPass);
-        if ($requestPass !== $adminUser->getPassword()) {
-            throw new CheckFailException('输入密码错误');
-        }
-
-        if ($adminUser->getAdminRole()->getStatus() == StatusEnum::OFF) {
-            throw new CheckFailException('用户组已被禁用');
-        }
-
-        # 生成token
-        $loginToken = $this->generateLoginToken($adminUser);
-
-        # 更新用户资料
-        $adminUser->setAccessToken($loginToken);
-        $adminUser->setLoginTime(new DateTime());
-        $entityManager->persist($adminUser);
-        $entityManager->flush();
-
-        if ($loginType == AdminLoginTypeEnum::ADMIN) {
-            $r = $adminUser->toArray();
-            $r['roles'] = [$adminUser->getAdminRole()->getRoleName()];
-            $this->getRedisClient()->set(Keys::adminUserLogin($adminUser->getId()), $loginToken, Keys::USER_LOGIN_EXPIRE_TIME);
-        } else {
-            $this->getRedisClient()->set(Keys::openApiToken($loginToken), $adminUser->getId(), Keys::OPEN_API_TOKEN_EXPIRE_TIME);
-            $r = [
-                'accessToken' => $loginToken,
-                'expireAt' => date('Y-m-d H:i:s', time() + Keys::OPEN_API_TOKEN_EXPIRE_TIME - 60)
-            ];
-        }
-
-        return $r;
     }
 
     /**
@@ -179,7 +129,7 @@ class AdminUserService extends BaseService
         $adminUser->setRoleId(2);
         $adminUser->setAdminRole($guestRole);
         $adminUser->setUsername($adminUserRequest->getUsername());
-        $adminUser->setPassword(self::makeUserPassword($adminUserRequest->getPassword(), $adminUserRequest->getUsername()));
+        $adminUser->setPassword(AdminLoginService::makeUserPassword($adminUserRequest->getPassword(), $adminUserRequest->getUsername()));
         $adminUser->setEmail($adminUserRequest->getEmail());
         $adminUser->setTrueName($adminUserRequest->getTrueName());
         $adminUser->setStatus($adminUserRequest->getStatus());
@@ -240,24 +190,5 @@ class AdminUserService extends BaseService
         $em->flush();
 
         return $adminUser->toArray();
-    }
-
-    /**
-     * @param string $password
-     * @param string $userSalt
-     * @return string
-     */
-    public static function makeUserPassword(string $password, string $userSalt): string
-    {
-        return md5($password . $userSalt . '_symfony_admin_');
-    }
-
-    /**
-     * @param AdminUser $adminUser
-     * @return string
-     */
-    private function generateLoginToken(AdminUser $adminUser): string
-    {
-        return md5(time() . $adminUser->getId() . rand(1, 1000)) . md5('symfony_admin' . rand(100, 999));
     }
 }

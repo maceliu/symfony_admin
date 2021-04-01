@@ -24,7 +24,8 @@
     "symfony/twig-pack": "^1.0",
     "symfony/yaml": "5.0.*",
     "ext-redis": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "symfony/mailer": "^5.2"
   },
   "autoload": {
     "psr-4": {

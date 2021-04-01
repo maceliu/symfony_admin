@@ -118,7 +118,8 @@ VALUES
 	(30,'product-list','/admin/user/get','获取用户信息接口',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
 	(31,'product-list','/admin/home/user','获取当前登录用户信息接口',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
 	(32,'product-list','/admin/home/fileUpload','上传文件',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
-	(33,'product-list','/admin/home/userUpdate','更新用户信息',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL);
+	(33,'product-list','/admin/home/userUpdate','更新用户信息',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
+    (48,'product-list', '/admin/role/create', '创建用户组', 3, 3, 0, 'node', 'on', '接口', 0, 0, '2020-12-29 00:00:00', '2021-01-18 23:59:42', NULL);
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 

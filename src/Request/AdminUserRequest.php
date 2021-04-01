@@ -37,6 +37,9 @@ class AdminUserRequest extends BaseRequest
     /** @var string */
     private $remark = '';
 
+    /** @var int */
+    private $checkCode;
+
     /**
      * @return int
      */
@@ -201,5 +204,24 @@ class AdminUserRequest extends BaseRequest
         $this->remark = $remark;
     }
 
+    /**
+     * @return int
+     */
+    public function getCheckCode(): int
+    {
+        return $this->checkCode;
+    }
+
+    /**
+     * @param int $checkCode
+     * @throws InvalidParamsException
+     */
+    public function setCheckCode(int $checkCode): void
+    {
+        if (empty($checkCode)) {
+            throw new InvalidParamsException('验证码格式错误！');
+        }
+        $this->checkCode = $checkCode;
+    }
 
 }

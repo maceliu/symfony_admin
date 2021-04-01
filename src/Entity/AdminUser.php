@@ -7,6 +7,7 @@ namespace SymfonyAdmin\Entity;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
+use SymfonyAdmin\Service\AdminLoginService;
 use SymfonyAdmin\Service\AdminUserService;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
 use DateTime;
@@ -337,7 +338,7 @@ class AdminUser extends BaseEntity
     {
         # 自动生成用户密码
         if ($eventArgs->hasChangedField('username') || $eventArgs->hasChangedField('password')) {
-            $this->setPassword(AdminUserService::makeUserPassword($this->password, $this->username));
+            $this->setPassword(AdminLoginService::makeUserPassword($this->password, $this->username));
             $em = $eventArgs->getEntityManager();
             $em->persist($this);
         }
