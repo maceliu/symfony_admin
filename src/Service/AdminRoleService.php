@@ -29,7 +29,7 @@ class AdminRoleService extends BaseService
     {
         # 查询多层级下属用户组ID
         $roleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
-        if (empty($childRoleIds)) {
+        if (empty($roleIds)) {
             throw new NotExistException('没有所属下级用户组！');
         }
 

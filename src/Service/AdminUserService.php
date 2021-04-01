@@ -5,21 +5,14 @@ namespace SymfonyAdmin\Service;
 
 
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use SymfonyAdmin\Entity\AdminAuth;
 use SymfonyAdmin\Entity\AdminUser;
-use SymfonyAdmin\Exception\CheckFailException;
 use SymfonyAdmin\Exception\DataDuplicationException;
 use SymfonyAdmin\Exception\NoAuthException;
 use SymfonyAdmin\Exception\NotExistException;
 use SymfonyAdmin\Request\AdminUserRequest;
 use SymfonyAdmin\Service\Base\BaseService;
 use SymfonyAdmin\Service\Base\CurdTrait;
-use SymfonyAdmin\Utils\Cache\Keys;
-use SymfonyAdmin\Utils\CommonUtils;
-use SymfonyAdmin\Utils\Enum\AdminLoginTypeEnum;
-use SymfonyAdmin\Utils\Enum\StatusEnum;
-use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use ReflectionException;

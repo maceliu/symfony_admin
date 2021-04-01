@@ -2,7 +2,6 @@
 
 namespace SymfonyAdmin\Controller;
 
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use SymfonyAdmin\Controller\Base\AdminApiController;
 use Exception;
 use SymfonyAdmin\Request\AdminUserRequest;
@@ -47,7 +46,6 @@ class IndexController extends AdminApiController
      * @param LoggerInterface $errorLogger
      * @param AdminLoginService $adminLoginService
      * @return JsonResponse
-     * @throws TransportExceptionInterface
      */
     public function findMyPassword(Request $request, LoggerInterface $errorLogger, AdminLoginService $adminLoginService): JsonResponse
     {
