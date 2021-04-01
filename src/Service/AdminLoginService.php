@@ -160,7 +160,7 @@ class AdminLoginService extends BaseService
             throw new NotExistException('用户已被禁用');
         }
 
-        $redisCheckCode = $this->getRedisClient()->hGet(Keys::passwordCheckCode($adminUser->getId()), Keys::CHECK_CODE);
+        $redisCheckCode = intval($this->getRedisClient()->hGet(Keys::passwordCheckCode($adminUser->getId()), Keys::CHECK_CODE));
         if (empty($redisCheckCode)) {
             throw new NotExistException('未发送验证码，或者验证码已过期，请重新点击发送');
         }
@@ -182,6 +182,7 @@ class AdminLoginService extends BaseService
         $em->persist($adminUser);
         $em->flush();
 
+        $this->getRedisClient()->del(Keys::passwordCheckCode($adminUser->getId()));
         return 1;
     }
 
