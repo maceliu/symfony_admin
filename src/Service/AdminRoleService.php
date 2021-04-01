@@ -52,7 +52,7 @@ class AdminRoleService extends BaseService
     public function getAllRoleList(AdminAuth $adminAuth): array
     {
         # 查询多层级下属用户组ID
-        return $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
+        return $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole(), false);
     }
 
     /**

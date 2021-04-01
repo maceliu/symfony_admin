@@ -98,7 +98,7 @@ class AdminRoleRepository extends ServiceEntityRepository
      * @param bool $isOnlyId
      * @return array
      */
-    public function findMultiAllByParentRole(AdminRole $adminRole, $isOnlyId = false): array
+    public function findMultiAllByParentRole(AdminRole $adminRole, $isOnlyId = true): array
     {
         $childRoles = [];
         $adminRole->setLevel(0);
