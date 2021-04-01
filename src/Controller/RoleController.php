@@ -108,6 +108,7 @@ class RoleController extends AdminApiController
             $adminRoleRequest = new AdminRoleRequest();
             $adminRoleRequest->setRoleName(trim($data['roleName'] ?? ''));
             $adminRoleRequest->setRoleCode(trim($data['roleCode'] ?? ''));
+            $adminRoleRequest->setStatus(trim($data['status'] ?? ''));
 
             # 添加用户组
             $menuList = $adminRoleService->create($adminAuth, $adminRoleRequest);
