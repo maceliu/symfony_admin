@@ -4,6 +4,7 @@
     "description": "A admin system base on symfony",
     "type": "library",
     "license": "MIT",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "mace liu",
