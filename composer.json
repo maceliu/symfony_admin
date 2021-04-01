@@ -1,40 +1,41 @@
 {
-
-    "name": "maceliu/symfony_admin",
-    "description": "A admin system base on symfony",
-    "type": "library",
-    "license": "MIT",
-    "version": "1.0.0",
-    "authors": [
-        {
-            "name": "mace liu",
-            "email": "liubo@xianglin.cn"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": "^7.2.5",
-        "stof/doctrine-extensions-bundle": "^1.5",
-        "symfony/asset": "5.0.*",
-        "symfony/console": "5.0.*",
-        "symfony/dotenv": "5.0.*",
-        "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "5.0.*",
-        "symfony/maker-bundle": "^1.20",
-        "symfony/monolog-bundle": "^3.5",
-        "symfony/orm-pack": "^1.0",
-        "symfony/twig-pack": "^1.0",
-        "symfony/yaml": "5.0.*"
-    },
-    "autoload": {
-        "psr-4": {
-            "SymfonyAdmin\\": "src/"
-        }
-    },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://mirrors.aliyun.com/composer/"
-        }
-    ]
+  "name": "maceliu/symfony_admin",
+  "description": "A admin system base on symfony",
+  "type": "library",
+  "license": "MIT",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "mace liu",
+      "email": "liubo@xianglin.cn"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.2.5",
+    "stof/doctrine-extensions-bundle": "^1.5",
+    "symfony/asset": "5.0.*",
+    "symfony/console": "5.0.*",
+    "symfony/dotenv": "5.0.*",
+    "symfony/flex": "^1.3.1",
+    "symfony/framework-bundle": "5.0.*",
+    "symfony/maker-bundle": "^1.20",
+    "symfony/monolog-bundle": "^3.5",
+    "symfony/orm-pack": "^1.0",
+    "symfony/twig-pack": "^1.0",
+    "symfony/yaml": "5.0.*",
+    "ext-redis": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "SymfonyAdmin\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer/"
+    }
+  ]
 }
