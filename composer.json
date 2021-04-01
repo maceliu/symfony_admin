@@ -10,7 +10,7 @@
       "email": "liubo@xianglin.cn"
     }
   ],
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "require": {
     "php": "^7.2.5",
     "stof/doctrine-extensions-bundle": "^1.5",
