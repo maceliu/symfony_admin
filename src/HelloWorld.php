@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MaceLiu;
+namespace SymfonyAdmin;
 
 
 class HelloWorld

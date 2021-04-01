@@ -1,6 +1,6 @@
 <?php
 
-namespace MaceLiu\Controller;
+namespace SymfonyAdmin\Controller;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
