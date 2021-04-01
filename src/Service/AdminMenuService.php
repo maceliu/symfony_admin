@@ -13,8 +13,8 @@ use SymfonyAdmin\Exception\NoAuthException;
 use SymfonyAdmin\Exception\NotExistException;
 use SymfonyAdmin\Request\AdminMenuRequest;
 use SymfonyAdmin\Service\Base\BaseService;
-use App\Service\Base\CurdTrait;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Service\Base\CurdTrait;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use ReflectionException;
 
 class AdminMenuService extends BaseService
