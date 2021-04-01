@@ -119,7 +119,7 @@ class AdminUserService extends BaseService
 
         # 新建模式
         $adminUser = new AdminUser();
-        $adminUser->setRoleId(2);
+        $adminUser->setRoleId($adminUserRequest->getRoleId());
         $adminUser->setAdminRole($guestRole);
         $adminUser->setUsername($adminUserRequest->getUsername());
         $adminUser->setPassword(AdminLoginService::makeUserPassword($adminUserRequest->getPassword(), $adminUserRequest->getUsername()));

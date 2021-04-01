@@ -93,6 +93,7 @@ class UserController extends AdminApiController
             $adminUserRequest->setRemark(trim($data['remark'] ?? ''));
             $adminUserRequest->setAvatar(trim($data['avatar'] ?? ''));
             $adminUserRequest->setStatus(trim($data['status']) ?? StatusEnum::ON);
+            $adminUserRequest->setRoleId(intval($data['roleId']) ?? 2);
             # 获取用户菜单列表
             $adminUser = $adminUserService->create($adminAuth, $adminUserRequest);
         } catch (Exception $e) {
