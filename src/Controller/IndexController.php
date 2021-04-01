@@ -65,7 +65,7 @@ class IndexController extends AdminApiController
     }
 
     /**
-     * @Route("/admin/index/findPass", name="adminIndexFindPass")
+     * @Route("/admin/index/resetPass", name="adminIndexResetPass")
      * @param Request $request
      * @param LoggerInterface $errorLogger
      * @param AdminLoginService $adminLoginService
