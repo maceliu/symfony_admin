@@ -21,12 +21,32 @@ class RoleController extends AdminApiController
 
     /**
      * @Route("/admin/role/list", name="roleList")
+     * @param LoggerInterface $errorLogger
+     * @param AdminRoleService $adminRoleService
+     * @return JsonResponse
+     */
+    public function getRoleList(LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
+    {
+        try {
+            $adminAuth = $this->adminAuthService->getLoginAuthInfo();
+
+            # 获取用户菜单列表
+            $menuList = $adminRoleService->getAllRoleList($adminAuth);
+        } catch (Exception $e) {
+            return ApiResponse::exception($e, $errorLogger);
+        }
+
+        return ApiResponse::success($menuList);
+    }
+
+    /**
+     * @Route("/admin/role/listPage", name="roleListPage")
      * @param Request $request
      * @param LoggerInterface $errorLogger
      * @param AdminRoleService $adminRoleService
      * @return JsonResponse
      */
-    public function getRoleList(Request $request, LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
+    public function getRoleListWithPage(Request $request, LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
     {
         try {
             $adminAuth = $this->adminAuthService->getLoginAuthInfo();
@@ -42,7 +62,7 @@ class RoleController extends AdminApiController
             }
 
             # 获取用户菜单列表
-            $menuList = $adminRoleService->getRoleList($adminAuth, $pageNum, $pageSize, $conditions);
+            $menuList = $adminRoleService->getRoleListWithPage($adminAuth, $pageNum, $pageSize, $conditions);
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }

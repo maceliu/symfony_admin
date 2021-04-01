@@ -25,7 +25,7 @@ class AdminRoleService extends BaseService
      * @return array
      * @throws NotExistException
      */
-    public function getRoleList(AdminAuth $adminAuth, int $pageNum, int $pageSize, array $conditions = []): array
+    public function getRoleListWithPage(AdminAuth $adminAuth, int $pageNum, int $pageSize, array $conditions = []): array
     {
         # 查询多层级下属用户组ID
         $roleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
@@ -43,6 +43,16 @@ class AdminRoleService extends BaseService
         $paginatorResult->setRowsList($rows);
 
         return $paginatorResult->toArray();
+    }
+
+    /**
+     * @param AdminAuth $adminAuth
+     * @return array
+     */
+    public function getAllRoleList(AdminAuth $adminAuth): array
+    {
+        # 查询多层级下属用户组ID
+        return $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
     }
 
     /**

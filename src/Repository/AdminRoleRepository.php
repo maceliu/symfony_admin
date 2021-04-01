@@ -95,9 +95,10 @@ class AdminRoleRepository extends ServiceEntityRepository
 
     /**
      * @param AdminRole $adminRole
+     * @param bool $isOnlyId
      * @return array
      */
-    public function findMultiAllByParentRole(AdminRole $adminRole): array
+    public function findMultiAllByParentRole(AdminRole $adminRole, $isOnlyId = false): array
     {
         $childRoles = [];
         $adminRole->setLevel(0);
@@ -130,7 +131,7 @@ class AdminRoleRepository extends ServiceEntityRepository
                     }
                     $childRole->setHasBrother($hasBrother);
                     $childRole->setLevel($adminRole->getLevel() + 1);
-                    $childRoles[$childRole->getId()] = $childRole->getId();
+                    $childRoles[$childRole->getId()] = $isOnlyId ? $childRole->getId() : $childRole->getApiFormat(true);
                 }
             }
 
