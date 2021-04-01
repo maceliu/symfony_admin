@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Utils;
+namespace SymfonyAdmin\Utils;
 
 
-use App\Entity\Base\BaseEntity;
+use SymfonyAdmin\Entity\Base\BaseEntity;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class PaginatorResult

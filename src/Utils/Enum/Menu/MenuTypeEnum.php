@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Utils\Enum\Menu;
+namespace SymfonyAdmin\Utils\Enum\Menu;
 
 
 class MenuTypeEnum

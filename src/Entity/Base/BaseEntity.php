@@ -5,8 +5,8 @@ namespace SymfonyAdmin\Entity\Base;
 
 
 use SymfonyAdmin\Request\Base\BaseRequest;
-use App\Utils\CommonUtils;
-use App\Utils\Enum\TimeFormatEnum;
+use SymfonyAdmin\Utils\CommonUtils;
+use SymfonyAdmin\Utils\Enum\TimeFormatEnum;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\PersistentCollection;

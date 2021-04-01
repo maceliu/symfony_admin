@@ -5,9 +5,9 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminMenu;
-use App\Utils\Enum\Menu\MenuTypeEnum;
-use App\Utils\Enum\StatusEnum;
-use App\Utils\MenuFormat;
+use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\MenuFormat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionException;

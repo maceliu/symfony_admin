@@ -4,37 +4,19 @@
 namespace SymfonyAdmin\Service\Base;
 
 
-use SymfonyAdmin\Entity\Admin\AdminFile;
-use App\Entity\Admin\AdminMenu;
-use App\Entity\Admin\AdminRole;
-use App\Entity\Admin\AdminRoleMenuMap;
-use App\Entity\Admin\AdminUser;
-use App\Entity\Calendar;
-use App\Entity\Holiday;
-use App\Entity\HolidayDateMap;
-use App\Entity\HolidayMarketingMap;
-use App\Entity\MarketingPlan;
-use App\Entity\MarketingPlanModule;
-use App\Entity\PosterLibrary;
-use App\Entity\WechatUserFeedBack;
-use App\Entity\WechatUserFootprint;
-use App\Exception\Base\ErrorException;
-use App\Repository\Admin\AdminFileRepository;
-use App\Repository\Admin\AdminMenuRepository;
-use App\Repository\Admin\AdminRoleMenuMapRepository;
-use App\Repository\Admin\AdminRoleRepository;
-use App\Repository\Admin\AdminUserRepository;
-use App\Repository\CalendarRepository;
-use App\Repository\HolidayDateMapRepository;
-use App\Repository\HolidayMarketingMapRepository;
-use App\Repository\HolidayRepository;
-use App\Repository\MarketingPlanModuleRepository;
-use App\Repository\MarketingPlanRepository;
-use App\Repository\PosterLibraryRepository;
-use App\Repository\WechatUserFeedBackRepository;
-use App\Repository\WechatUserFootprintRepository;
-use App\Utils\Cache\Keys;
-use App\Utils\Cache\RedisProvider;
+use SymfonyAdmin\Entity\AdminFile;
+use SymfonyAdmin\Entity\AdminMenu;
+use SymfonyAdmin\Entity\AdminRole;
+use SymfonyAdmin\Entity\AdminRoleMenuMap;
+use SymfonyAdmin\Entity\AdminUser;
+use SymfonyAdmin\Exception\Base\ErrorException;
+use SymfonyAdmin\Repository\AdminFileRepository;
+use SymfonyAdmin\Repository\AdminMenuRepository;
+use SymfonyAdmin\Repository\AdminRoleMenuMapRepository;
+use SymfonyAdmin\Repository\AdminRoleRepository;
+use SymfonyAdmin\Repository\AdminUserRepository;
+use SymfonyAdmin\Utils\Cache\Keys;
+use SymfonyAdmin\Utils\Cache\RedisProvider;
 use Doctrine\Persistence\ManagerRegistry;
 use Redis;
 
@@ -144,104 +126,5 @@ class BaseService
             $this->repoInstance[AdminFile::class] = $this->doctrine->getRepository(AdminFile::class);
         }
         return $this->repoInstance[AdminFile::class];
-    }
-
-    /**
-     * @return CalendarRepository
-     */
-    protected function getCalendarRepo(): CalendarRepository
-    {
-        if (!isset($this->repoInstance[Calendar::class])) {
-            $this->repoInstance[Calendar::class] = $this->doctrine->getRepository(Calendar::class);
-        }
-        return $this->repoInstance[Calendar::class];
-    }
-
-    /**
-     * @return HolidayRepository
-     */
-    public function getHolidayRepo(): HolidayRepository
-    {
-        if (!isset($this->repoInstance[Holiday::class])) {
-            $this->repoInstance[Holiday::class] = $this->doctrine->getRepository(Holiday::class);
-        }
-        return $this->repoInstance[Holiday::class];
-    }
-
-    /**
-     * @return MarketingPlanRepository
-     */
-    protected function getMarketingPlanRepo(): MarketingPlanRepository
-    {
-        if (!isset($this->repoInstance[MarketingPlan::class])) {
-            $this->repoInstance[MarketingPlan::class] = $this->doctrine->getRepository(MarketingPlan::class);
-        }
-        return $this->repoInstance[MarketingPlan::class];
-    }
-
-    /**
-     * @return MarketingPlanModuleRepository
-     */
-    protected function getMarketingPlanModuleRepo(): MarketingPlanModuleRepository
-    {
-        if (!isset($this->repoInstance[MarketingPlanModule::class])) {
-            $this->repoInstance[MarketingPlanModule::class] = $this->doctrine->getRepository(MarketingPlanModule::class);
-        }
-        return $this->repoInstance[MarketingPlanModule::class];
-    }
-
-    /**
-     * @return HolidayDateMapRepository
-     */
-    protected function getHolidayDateMapRepo(): HolidayDateMapRepository
-    {
-        if (!isset($this->repoInstance[HolidayDateMap::class])) {
-            $this->repoInstance[HolidayDateMap::class] = $this->doctrine->getRepository(HolidayDateMap::class);
-        }
-        return $this->repoInstance[HolidayDateMap::class];
-    }
-
-    /**
-     * @return HolidayMarketingMapRepository
-     */
-    protected function getHolidayMarketingMapRepo(): HolidayMarketingMapRepository
-    {
-        if (!isset($this->repoInstance[HolidayMarketingMap::class])) {
-            $this->repoInstance[HolidayMarketingMap::class] = $this->doctrine->getRepository(HolidayMarketingMap::class);
-        }
-        return $this->repoInstance[HolidayMarketingMap::class];
-    }
-
-    /**
-     * @return PosterLibraryRepository
-     */
-    protected function getPosterLibraryRepo(): PosterLibraryRepository
-    {
-        if (!isset($this->repoInstance[PosterLibrary::class])) {
-            $this->repoInstance[PosterLibrary::class] = $this->doctrine->getRepository(PosterLibrary::class);
-        }
-        return $this->repoInstance[PosterLibrary::class];
-    }
-
-    /**
-     * @return WechatUserFootprintRepository
-     */
-    protected function getWechatFootprintRepo(): WechatUserFootprintRepository
-    {
-        if (!isset($this->repoInstance[WechatUserFootprint::class])) {
-            $this->repoInstance[WechatUserFootprint::class] = $this->doctrine->getRepository(WechatUserFootprint::class);
-        }
-        return $this->repoInstance[WechatUserFootprint::class];
-    }
-
-    /**
-     * @return WechatUserFeedBackRepository
-     */
-    protected function getWechatUserFeedBackRepo(): WechatUserFeedBackRepository
-    {
-        if (!isset($this->repoInstance[WechatUserFeedBack::class])) {
-            $this->repoInstance[WechatUserFeedBack::class] = $this->doctrine->getRepository(WechatUserFeedBack::class);
-        }
-        return $this->repoInstance[WechatUserFeedBack::class];
     }
 }

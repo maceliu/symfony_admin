@@ -4,7 +4,6 @@
 namespace SymfonyAdmin\Entity\Base;
 
 
-use SymfonyAdmin\Request\Base\BaseRequest;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 

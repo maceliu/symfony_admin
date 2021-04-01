@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Utils;
+namespace SymfonyAdmin\Utils;
 
 
-use App\Entity\Admin\AdminMenu;
+use SymfonyAdmin\Entity\AdminMenu;
 use ReflectionException;
 
 class MenuFormat

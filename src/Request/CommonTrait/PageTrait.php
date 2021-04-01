@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Request\CommonTrait;
+namespace SymfonyAdmin\Request\CommonTrait;
 
 
-use App\Exception\InvalidParamsException;
+use SymfonyAdmin\Exception\InvalidParamsException;
 
 trait PageTrait
 {

@@ -5,7 +5,7 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminRoleMenuMap;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

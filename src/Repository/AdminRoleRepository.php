@@ -5,7 +5,7 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminRole;
-use App\Utils\PaginatorResult;
+use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;

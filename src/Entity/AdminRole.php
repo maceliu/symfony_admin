@@ -5,7 +5,7 @@ namespace SymfonyAdmin\Entity;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -14,7 +14,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  * AdminRole
  *
  * @ORM\Table(name="admin_role")
- * @ORM\Entity(repositoryClass="App\Repository\Admin\AdminRoleRepository")
+ * @ORM\Entity(repositoryClass="SymfonyAdmin\Repository\AdminRoleRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */

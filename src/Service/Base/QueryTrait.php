@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Service\Base;
+namespace SymfonyAdmin\Service\Base;
 
-use App\Utils\Enum\SearchTypeEnum;
+use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
 use Doctrine\ORM\QueryBuilder;
 
 trait QueryTrait
 {
-
-
     /**
      * @param QueryBuilder $qb
      * @param array $searchMap

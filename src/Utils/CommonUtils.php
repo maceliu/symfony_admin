@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Utils;
+namespace SymfonyAdmin\Utils;
 
 
 class CommonUtils

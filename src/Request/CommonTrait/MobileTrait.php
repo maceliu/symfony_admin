@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Request\CommonTrait;
+namespace SymfonyAdmin\Request\CommonTrait;
 
 
-use App\Exception\InvalidParamsException;
-use App\Utils\CommonUtils;
+use SymfonyAdmin\Exception\InvalidParamsException;
+use SymfonyAdmin\Utils\CommonUtils;
 
 trait MobileTrait
 {

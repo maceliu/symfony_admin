@@ -3,7 +3,7 @@
 namespace SymfonyAdmin\Controller\Base;
 
 use SymfonyAdmin\Service\AdminAuthService;
-use App\Utils\Cache\RedisProvider;
+use SymfonyAdmin\Utils\Cache\RedisProvider;
 use Redis;
 
 class AdminApiController extends BaseController

@@ -5,9 +5,9 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminUser;
-use App\Service\Base\QueryTrait;
-use App\Utils\Enum\SearchTypeEnum;
-use App\Utils\PaginatorResult;
+use SymfonyAdmin\Service\Base\QueryTrait;
+use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
+use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;

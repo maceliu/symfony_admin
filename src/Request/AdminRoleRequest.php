@@ -6,7 +6,7 @@ namespace SymfonyAdmin\Request;
 
 use SymfonyAdmin\Exception\InvalidParamsException;
 use SymfonyAdmin\Request\Base\BaseRequest;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 
 class AdminRoleRequest extends BaseRequest
 {

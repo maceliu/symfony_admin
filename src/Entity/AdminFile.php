@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * AdminFile
  *
  * @ORM\Table(name="admin_file")
- * @ORM\Entity(repositoryClass="App\Repository\Admin\AdminFileRepository")
+ * @ORM\Entity(repositoryClass="SymfonyAdmin\Repository\AdminFileRepository")
  */
 class AdminFile
 {

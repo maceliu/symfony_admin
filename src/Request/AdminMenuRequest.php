@@ -6,8 +6,8 @@ namespace SymfonyAdmin\Request;
 
 use SymfonyAdmin\Exception\InvalidParamsException;
 use SymfonyAdmin\Request\Base\BaseRequest;
-use App\Utils\Enum\Menu\MenuTypeEnum;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 
 class AdminMenuRequest extends BaseRequest
 {

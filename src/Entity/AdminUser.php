@@ -7,8 +7,8 @@ namespace SymfonyAdmin\Entity;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
-use App\Service\Admin\AdminUserService;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Service\AdminUserService;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use DateTime;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +20,7 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  * Goods
  *
  * @ORM\Table(name="admin_user")
- * @ORM\Entity(repositoryClass="App\Repository\Admin\AdminUserRepository")
+ * @ORM\Entity(repositoryClass="SymfonyAdmin\Repository\AdminUserRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */

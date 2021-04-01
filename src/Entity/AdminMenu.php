@@ -7,8 +7,8 @@ use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
 use SymfonyAdmin\Exception\NotExistException;
 use SymfonyAdmin\Repository\AdminMenuRepository;
-use App\Utils\Enum\Menu\MenuTypeEnum;
-use App\Utils\Enum\StatusEnum;
+use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -22,7 +22,7 @@ use ReflectionException;
  * AdminMenu
  *
  * @ORM\Table(name="admin_menu", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"path"})}, indexes={@ORM\Index(name="weigh", columns={"weight"})})
- * @ORM\Entity(repositoryClass="App\Repository\Admin\AdminMenuRepository")
+ * @ORM\Entity(repositoryClass="SymfonyAdmin\Repository\AdminMenuRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
