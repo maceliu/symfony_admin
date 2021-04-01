@@ -8,7 +8,6 @@ use Exception;
 use SymfonyAdmin\Request\AdminUserRequest;
 use SymfonyAdmin\Response\ApiResponse;
 use SymfonyAdmin\Service\AdminLoginService;
-use SymfonyAdmin\Service\AdminUserService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
