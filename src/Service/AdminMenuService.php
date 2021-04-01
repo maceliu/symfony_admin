@@ -135,7 +135,7 @@ class AdminMenuService extends BaseService
     {
         # 如果传入roleId，则查询指定roleId所有可访问的菜单列表
         if ($roleId) {
-            $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole(), true);
+            $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
             if (!in_array($roleId, $childRoleIds)) {
                 throw new NoAuthException('没有权限编辑的用户组！');
             }
@@ -235,7 +235,7 @@ class AdminMenuService extends BaseService
      */
     public function updateRoleMenus(AdminAuth $adminAuth, int $roleId, array $menuIds): string
     {
-        $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole(), true);
+        $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
         if (!in_array($roleId, $childRoleIds)) {
             throw new NoAuthException('没有权限编辑的用户组！');
         }

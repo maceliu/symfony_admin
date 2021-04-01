@@ -5,6 +5,7 @@ namespace SymfonyAdmin\Controller;
 
 
 use SymfonyAdmin\Controller\Base\AdminApiController;
+use SymfonyAdmin\Repository\AdminRoleRepository;
 use SymfonyAdmin\Request\AdminRoleRequest;
 use SymfonyAdmin\Service\AdminMenuService;
 use SymfonyAdmin\Service\AdminRoleService;
@@ -20,16 +21,28 @@ class RoleController extends AdminApiController
 
     /**
      * @Route("/admin/role/list", name="roleList")
+     * @param Request $request
      * @param LoggerInterface $errorLogger
      * @param AdminRoleService $adminRoleService
      * @return JsonResponse
      */
-    public function getRoleList(LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
+    public function getRoleList(Request $request, LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
     {
         try {
             $adminAuth = $this->adminAuthService->getLoginAuthInfo();
+
+            $pageNum = intval($request->query->get('pageNum', 1));
+            $pageSize = intval($request->query->get('pageSize', 10));
+
+            $conditions = [];
+            foreach (AdminRoleRepository::$searchMap as $searchKey => $type) {
+                if ($request->query->get($searchKey)) {
+                    $conditions[$searchKey] = trim($request->query->get($searchKey));
+                }
+            }
+
             # 获取用户菜单列表
-            $menuList = $adminRoleService->getRoleList($adminAuth);
+            $menuList = $adminRoleService->getRoleList($adminAuth, $pageNum, $pageSize, $conditions);
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }

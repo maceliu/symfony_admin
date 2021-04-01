@@ -5,6 +5,8 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminRole;
+use SymfonyAdmin\Service\Base\QueryTrait;
+use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
 use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -12,6 +14,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class AdminRoleRepository extends ServiceEntityRepository
 {
+    use QueryTrait;
+
+    static $searchMap = [
+        'roleName' => SearchTypeEnum::FUZZY,
+    ];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AdminRole::class);
@@ -87,10 +95,9 @@ class AdminRoleRepository extends ServiceEntityRepository
 
     /**
      * @param AdminRole $adminRole
-     * @param bool $isOnlyId
      * @return array
      */
-    public function findMultiAllByParentRole(AdminRole $adminRole, $isOnlyId = false): array
+    public function findMultiAllByParentRole(AdminRole $adminRole): array
     {
         $childRoles = [];
         $adminRole->setLevel(0);
@@ -123,7 +130,7 @@ class AdminRoleRepository extends ServiceEntityRepository
                     }
                     $childRole->setHasBrother($hasBrother);
                     $childRole->setLevel($adminRole->getLevel() + 1);
-                    $childRoles[$childRole->getId()] = $isOnlyId ? $childRole->getId() : $childRole->getApiFormat(true);
+                    $childRoles[$childRole->getId()] = $childRole->getId();
                 }
             }
 
@@ -137,13 +144,16 @@ class AdminRoleRepository extends ServiceEntityRepository
      * @param array $ids
      * @param int $pageNum
      * @param int $pageSize
+     * @param array $conditions
      * @return PaginatorResult
      */
-    public function findAllByIdsWithPage(array $ids, int $pageNum = 1, int $pageSize = 10): PaginatorResult
+    public function findAllByIdsWithPage(array $ids, int $pageNum = 1, int $pageSize = 10, array $conditions = []): PaginatorResult
     {
         $qb = $this->createQueryBuilder('r');
         $qb->where($qb->expr()->in('r.id', $ids))
             ->orderBy('r.id', 'desc');
+
+        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'r', $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }

@@ -19,12 +19,30 @@ class AdminRoleService extends BaseService
 
     /**
      * @param AdminAuth $adminAuth
+     * @param int $pageNum
+     * @param int $pageSize
+     * @param array $conditions
      * @return array
+     * @throws NotExistException
      */
-    public function getRoleList(AdminAuth $adminAuth): array
+    public function getRoleList(AdminAuth $adminAuth, int $pageNum, int $pageSize, array $conditions = []): array
     {
         # 查询多层级下属用户组ID
-        return $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
+        $roleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
+        if (empty($childRoleIds)) {
+            throw new NotExistException('没有所属下级用户组！');
+        }
+
+        $paginatorResult = $this->getAdminRoleRepo()->findAllByIdsWithPage($roleIds, $pageNum, $pageSize, $conditions);
+
+        $rows = [];
+        /** @var AdminRole $adminRole */
+        foreach ($paginatorResult->getEntityList() as $adminRole) {
+            $rows[] = $adminRole->getApiFormat();
+        }
+        $paginatorResult->setRowsList($rows);
+
+        return $paginatorResult->toArray();
     }
 
     /**
@@ -36,7 +54,7 @@ class AdminRoleService extends BaseService
      */
     public function getChildOne(AdminAuth $adminAuth, AdminRoleRequest $adminRoleRequest): AdminRole
     {
-        $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole(), true);
+        $childRoleIds = $this->getAdminRoleRepo()->findMultiAllByParentRole($adminAuth->getAdminRole());
         if (!in_array($adminRoleRequest->getId(), $childRoleIds)) {
             throw new NoAuthException('无权限编辑的角色组！');
         }
