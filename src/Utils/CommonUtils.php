@@ -6,6 +6,22 @@ namespace SymfonyAdmin\Utils;
 
 class CommonUtils
 {
+
+    static $appName = '';
+
+    /**
+     * @return string
+     */
+    public static function getAppName(): string
+    {
+        if (!empty(self::$appName)) {
+            return self::$appName;
+        }
+
+        self::$appName = $_ENV['APP_NAME'] ?? 'symfony_admin';
+        return self::$appName;
+    }
+
     /**
      * @param string|int $mobile
      * @return bool

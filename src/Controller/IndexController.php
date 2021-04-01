@@ -15,19 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AdminApiController
 {
     /**
-     * @Route("/maceliu/index", name="maceliuIndex")
-     * @param Request $request
-     * @param LoggerInterface $logger
-     * @return JsonResponse
-     */
-    public function index(Request $request, LoggerInterface $logger): JsonResponse
-    {
-        var_dump('hello world!');
-        var_dump($request->get('test', 1));
-        exit;
-    }
-
-    /**
      * @Route("/admin/index/login", name="adminIndexLogin")
      * @param Request $request
      * @param LoggerInterface $errorLogger

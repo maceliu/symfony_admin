@@ -231,10 +231,6 @@ class AdminUserService extends BaseService
             $adminUser->setAvatar($adminUserRequest->getAvatar());
         }
 
-//        if ($adminUserRequest->getMobile()) {
-//            $adminUser->setMobile($adminUserRequest->getMobile());
-//        }
-
         if ($adminUserRequest->getPassword()) {
             $adminUser->setPassword($adminUserRequest->getPassword());
         }
@@ -253,7 +249,7 @@ class AdminUserService extends BaseService
      */
     public static function makeUserPassword(string $password, string $userSalt): string
     {
-        return md5($password . $userSalt . 'yn_admin_hrm');
+        return md5($password . $userSalt . '_symfony_admin_');
     }
 
     /**
@@ -262,6 +258,6 @@ class AdminUserService extends BaseService
      */
     private function generateLoginToken(AdminUser $adminUser): string
     {
-        return md5(time() . $adminUser->getId() . 'xl_hrm' . rand(1, 1000)) . md5('xl_hrm' . rand(100, 999));
+        return md5(time() . $adminUser->getId() . rand(1, 1000)) . md5('symfony_admin' . rand(100, 999));
     }
 }

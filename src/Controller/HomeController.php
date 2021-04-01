@@ -72,7 +72,6 @@ class HomeController extends AdminApiController
             $adminUserRequest = new AdminUserRequest();
             $adminUserRequest->setTrueName(trim($data['trueName'] ?? ''));
             $adminUserRequest->setEmail(trim($data['email'] ?? ''));
-//            $adminUserRequest->setMobile(trim($data['mobile'] ?? ''));
             $adminUserRequest->setAvatar(trim($data['avatar'] ?? ''));
             if (!empty($data['password'])) {
                 $adminUserRequest->setPassword(trim($data['password'] ?? ''));

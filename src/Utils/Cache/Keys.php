@@ -4,6 +4,8 @@
 namespace SymfonyAdmin\Utils\Cache;
 
 
+use SymfonyAdmin\Utils\CommonUtils;
+
 class Keys
 {
     const TEN_MIN_CACHE_TIME = 600;
@@ -14,16 +16,11 @@ class Keys
 
     static function adminUserLogin($userId): string
     {
-        return 'calendar_admin_user_login_info_' . $userId;
+        return CommonUtils::getAppName() . '_admin_user_login_info_' . $userId;
     }
 
     static function openApiToken(string $accessToken): string
     {
-        return 'calendar_admin_open_api_access_token_' . $accessToken;
-    }
-
-    static function wxLoginToken(string $userId): string
-    {
-        return 'calendar_wx_login_token' . $userId;
+        return CommonUtils::getAppName() .'_admin_open_api_access_token_' . $accessToken;
     }
 }
