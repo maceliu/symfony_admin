@@ -244,4 +244,12 @@ class AdminFile
     {
         $this->fileHost = $fileHost;
     }
+
+    /**
+     * @return string
+     */
+    public function getFullPath(): string
+    {
+        return $this->fileHost . $this->filePath;
+    }
 }

@@ -101,7 +101,7 @@ class HomeController extends AdminApiController
             foreach ($adminFileList as $adminFile) {
                 $r[] = [
                     'id' => $adminFile->getId(),
-                    'filePath' => $adminFile->getFileHost() . $adminFile->getFilePath(),
+                    'filePath' => $adminFile->getFullPath(),
                 ];
             }
         } catch (Exception $e) {
