@@ -18,7 +18,7 @@ class AdminFileService extends BaseService
     /**
      * @param AdminAuth $adminAuth
      * @param Request $request
-     * @return array
+     * @return AdminFile[]
      */
     public function upload(AdminAuth $adminAuth, Request $request): array
     {
@@ -70,23 +70,14 @@ class AdminFileService extends BaseService
         }
 
         $em->flush();
-
-        # 返回数据格式化展示
-        $r = [];
-        foreach ($fileList as $file) {
-            $r[] = [
-                'id' => $file->getId(),
-                'filePath' => $file->getFileHost() . $file->getFilePath(),
-            ];
-        }
-        return $r;
+        return $fileList;
     }
 
 
     /**
      * @param AdminAuth $adminAuth
      * @param Request $request
-     * @return array
+     * @return AdminFile[]
      * @throws OssException
      */
     public function uploadOss(AdminAuth $adminAuth, Request $request): array
@@ -123,15 +114,7 @@ class AdminFileService extends BaseService
             $em->persist($adminFile);
         }
         $em->flush();
-
-        $r = [];
-        foreach ($filePathList as $file) {
-            $r[] = [
-                'id' => $file->getId(),
-                'posterPath' => $file->getPosterPath()
-            ];
-        }
-        return $r;
+        return $filePathList;
     }
 
 }

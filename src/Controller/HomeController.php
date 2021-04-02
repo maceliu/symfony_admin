@@ -96,7 +96,14 @@ class HomeController extends AdminApiController
     {
         try {
             $adminAuth = $this->adminAuthService->getLoginAuthInfo();
-            $r = $adminFileService->upload($adminAuth, $request);
+            $adminFileList = $adminFileService->upload($adminAuth, $request);
+            $r = [];
+            foreach ($adminFileList as $adminFile) {
+                $r[] = [
+                    'id' => $adminFile->getId(),
+                    'filePath' => $adminFile->getFileHost() . $adminFile->getFilePath(),
+                ];
+            }
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }
