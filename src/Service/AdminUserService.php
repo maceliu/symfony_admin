@@ -16,6 +16,7 @@ use SymfonyAdmin\Service\Base\CurdTrait;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use ReflectionException;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 
 class AdminUserService extends BaseService
 {
@@ -110,24 +111,21 @@ class AdminUserService extends BaseService
         }
 
         # 默认游客用户组
-        $guestRole = $this->getAdminRoleRepo()->findOneByRoleCode('guest');
-        if (!$guestRole) {
-            throw new NoAuthException('默认游客用户组不存在！');
+        $role = $this->getAdminRoleRepo()->findOneById($adminUserRequest->getRoleId());
+        if (!$role || $role->getStatus() != StatusEnum::ON) {
+            throw new NoAuthException('指定用户组不存在或未启用！');
         }
 
         $em = $this->doctrine->getManager();
-
-        # 新建模式
         $adminUser = new AdminUser();
         $adminUser->setRoleId($adminUserRequest->getRoleId());
-        $adminUser->setAdminRole($guestRole);
+        $adminUser->setAdminRole($role);
         $adminUser->setUsername($adminUserRequest->getUsername());
         $adminUser->setPassword(AdminLoginService::makeUserPassword($adminUserRequest->getPassword(), $adminUserRequest->getUsername()));
         $adminUser->setEmail($adminUserRequest->getEmail());
         $adminUser->setTrueName($adminUserRequest->getTrueName());
         $adminUser->setStatus($adminUserRequest->getStatus());
         $adminUser->setAvatar($adminUserRequest->getAvatar());
-
         # 入库
         $em->persist($adminUser);
         $em->flush();
