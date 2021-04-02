@@ -84,7 +84,7 @@ class AdminFileService extends BaseService
     {
         $fileType = trim($request->get('fileType', 'default'));
 
-        $filePathList = [];
+        $fileList = [];
         $em = $this->doctrine->getManager();
         foreach ($request->files as $key => $file) {
             $fileSize = $file->getSize();
@@ -110,11 +110,11 @@ class AdminFileService extends BaseService
                 $adminFile->setFileExt($extName);
                 $adminFile->setCreateTime(new DateTime());
             }
-            $filePathList[] = $adminFile;
+            $fileList[] = $adminFile;
             $em->persist($adminFile);
         }
         $em->flush();
-        return $filePathList;
+        return $fileList;
     }
 
 }
