@@ -4,12 +4,14 @@
 namespace SymfonyAdmin\Service;
 
 
+use OSS\Core\OssException;
 use SymfonyAdmin\Entity\AdminAuth;
 use SymfonyAdmin\Entity\AdminFile;
 use SymfonyAdmin\Service\Base\BaseService;
 use DateTime;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use SymfonyAdmin\Utils\RemoteService\AliOssRemoteService;
 
 class AdminFileService extends BaseService
 {
@@ -54,6 +56,7 @@ class AdminFileService extends BaseService
 
             # 写入数据库记录
             $adminFile = new AdminFile();
+            $adminFile->setFileHost($request->getScheme() . '://' . $request->getHost());
             $adminFile->setFilePath($queryFilePath . $fileHash . '.' . $extName);
             $adminFile->setFileSize($fileSize);
             $adminFile->setFileHash($fileHash);
@@ -73,10 +76,61 @@ class AdminFileService extends BaseService
         foreach ($fileList as $file) {
             $r[] = [
                 'id' => $file->getId(),
-                'filePath' => $request->getScheme() . '://' . $request->getHost() . $file->getFilePath(),
+                'filePath' => $file->getFileHost() . $file->getFilePath(),
             ];
         }
+        return $r;
+    }
 
+
+    /**
+     * @param AdminAuth $adminAuth
+     * @param Request $request
+     * @return array
+     * @throws OssException
+     */
+    public function uploadOss(AdminAuth $adminAuth, Request $request): array
+    {
+        $fileType = trim($request->get('fileType', 'default'));
+
+        $filePathList = [];
+        $em = $this->doctrine->getManager();
+        foreach ($request->files as $key => $file) {
+            $fileSize = $file->getSize();
+            $fileName = explode('.', $file->getClientOriginalName());
+            $extName = array_pop($fileName) ?? '';
+            $fileHash = hash_file('md5', $file->getFileInfo());
+            $filePath = implode('/', ['upload/image', date('Ymd'), $fileHash . '.' . $extName]);
+            $oldFile = $this->getAdminFileRepo()->findOneByFileHash($fileHash);
+            if ($oldFile) {
+                $fileList[] = $oldFile;
+                continue;
+            }
+
+            $adminFile = new AdminFile();
+            $ossResponseArr = AliOssRemoteService::uploadImgFile($filePath, $file);
+            if (!empty($ossResponseArr['info']['url'])) {
+                $adminFile->setFileHost(trim($ossResponseArr['info']['url']));
+                $adminFile->setFilePath($filePath);
+                $adminFile->setFileSize($fileSize);
+                $adminFile->setFileHash($fileHash);
+                $adminFile->setFileType($fileType);
+                $adminFile->setUserId($adminAuth->getAdminUser()->getId());
+                $adminFile->setFileExt($extName);
+                $adminFile->setCreateTime(new DateTime());
+            }
+            $filePathList[] = $adminFile;
+            $em->persist($adminFile);
+        }
+        $em->flush();
+
+        $r = [];
+        foreach ($filePathList as $file) {
+            $r[] = [
+                'id' => $file->getId(),
+                'posterPath' => $file->getPosterPath()
+            ];
+        }
         return $r;
     }
 

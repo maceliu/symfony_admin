@@ -2,6 +2,7 @@
 
 namespace SymfonyAdmin\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +28,13 @@ class AdminFile
      * @ORM\Column(name="file_type", type="string", length=32, nullable=true, options={"comment"="文件类型"})
      */
     private $fileType;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="file_host", type="string", length=128, nullable=true, options={"comment"="文件域名"})
+     */
+    private $fileHost;
 
     /**
      * @var string|null
@@ -64,14 +72,14 @@ class AdminFile
     private $fileHash;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="create_time", type="datetime", nullable=true, options={"comment"="上传时间"})
      */
     private $createTime;
 
     /**
-     * @var \DateTime|null
+     * @var DateTime|null
      *
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true, options={"comment"="删除时间"})
      */
@@ -174,33 +182,33 @@ class AdminFile
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getCreateTime(): ?\DateTime
+    public function getCreateTime(): ?DateTime
     {
         return $this->createTime;
     }
 
     /**
-     * @param \DateTime|null $createTime
+     * @param DateTime|null $createTime
      */
-    public function setCreateTime(?\DateTime $createTime): void
+    public function setCreateTime(?DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getDeletedAt(): ?\DateTime
+    public function getDeletedAt(): ?DateTime
     {
         return $this->deletedAt;
     }
 
     /**
-     * @param \DateTime|null $deletedAt
+     * @param DateTime|null $deletedAt
      */
-    public function setDeletedAt(?\DateTime $deletedAt): void
+    public function setDeletedAt(?DateTime $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -221,4 +229,19 @@ class AdminFile
         $this->fileHash = $fileHash;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getFileHost(): ?string
+    {
+        return $this->fileHost;
+    }
+
+    /**
+     * @param string|null $fileHost
+     */
+    public function setFileHost(?string $fileHost): void
+    {
+        $this->fileHost = $fileHost;
+    }
 }
