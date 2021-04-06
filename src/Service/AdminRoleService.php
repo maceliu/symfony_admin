@@ -4,6 +4,7 @@
 namespace SymfonyAdmin\Service;
 
 
+use Doctrine\ORM\NonUniqueResultException;
 use ReflectionException;
 use SymfonyAdmin\Entity\AdminAuth;
 use SymfonyAdmin\Entity\AdminRole;
@@ -115,6 +116,7 @@ class AdminRoleService extends BaseService
      * @throws NoAuthException
      * @throws NotExistException
      * @throws ReflectionException
+     * @throws NonUniqueResultException
      */
     public function update(AdminAuth $adminAuth, AdminRoleRequest $request): array
     {

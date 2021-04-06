@@ -7,7 +7,9 @@ namespace SymfonyAdmin\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use SymfonyAdmin\Entity\AdminRole;
 use SymfonyAdmin\Service\Base\QueryTrait;
+use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
 use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
+use SymfonyAdmin\Utils\Enum\StatusEnum;
 use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -172,9 +174,11 @@ class AdminRoleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r');
         $qb->where($qb->expr()->orX(
-            $qb->expr()->eq('r.roleName', $roleName),
-            $qb->expr()->eq('r.roleCode', $roleCode)
-        ));
+            $qb->expr()->eq('r.roleName', ':roleName'),
+            $qb->expr()->eq('r.roleCode', ':roleCode')
+        ))
+            ->setParameter('roleName', $roleName)
+            ->setParameter('roleCode', $roleCode);
 
         if (!empty($id)) {
             $qb->andWhere($qb->expr()->neq('r.id', $id));
