@@ -1,5 +1,5 @@
 # symfony_admin
-A admin system base on symfony 5.*
+A set of admin system interface based on symfony 5.*
 
 ## How to use it ?
 
