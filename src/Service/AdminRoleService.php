@@ -118,14 +118,9 @@ class AdminRoleService extends BaseService
      */
     public function update(AdminAuth $adminAuth, AdminRoleRequest $request): array
     {
-        $oldAdminRole = $this->getAdminRoleRepo()->findOneByName($request->getRoleName());
+        $oldAdminRole = $this->getAdminRoleRepo()->findConflictOneOnyByNameOrCode($request->getRoleName(), $request->getRoleCode(), $request->getId());
         if ($oldAdminRole && $oldAdminRole->getStatus() == StatusEnum::ON) {
-            throw new NotExistException('角色组名称已存在，无法重复新增！');
-        }
-
-        $oldAdminRole = $this->getAdminRoleRepo()->findOneByRoleCode($request->getRoleCode());
-        if ($oldAdminRole && $oldAdminRole->getStatus() == StatusEnum::ON) {
-            throw new NotExistException('角色组编码已存在，无法重复新增！');
+            throw new NotExistException('角色组名称或编码已存在，无法重复新增！');
         }
 
         $adminRole = $this->getChildOne($adminAuth, $request);

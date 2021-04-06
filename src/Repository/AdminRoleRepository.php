@@ -11,6 +11,7 @@ use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
 
 class AdminRoleRepository extends ServiceEntityRepository
 {
@@ -157,5 +158,28 @@ class AdminRoleRepository extends ServiceEntityRepository
         $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'r', $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
+    }
+
+    /**
+     * @param string $roleName
+     * @param string $roleCode
+     * @param int|null $id
+     * @return AdminRole|NULL
+     */
+    public function findConflictOneOnyByNameOrCode(string $roleName, string $roleCode, int $id = null): ?AdminRole
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->where($qb->expr()->orX(
+            $qb->expr()->eq('r.roleName', $roleName),
+            $qb->expr()->eq('r.roleCode', $roleCode)
+        ));
+
+        if (!empty($id)) {
+            $qb->andWhere($qb->expr()->neq('r.id', $id));
+        }
+
+        $qb->setMaxResults(1);
+
+        return $qb->getQuery()->getResult();
     }
 }
