@@ -46,6 +46,15 @@ doctrine:
                 dir: '%kernel.project_dir%/vendor/maceliu/symfony_admin/src/Entity'
                 prefix: 'SymfonyAdmin\Entity'
                 alias: App
+        filters:
+            soft-deleteable:
+                class: Gedmo\SoftDeleteable\Filter\SoftDeleteableFilter
+                enabled: true
+                
+stof_doctrine_extensions:
+    orm:
+        default:
+            softdeleteable: true
 ```
 
 ### 5. Install db data

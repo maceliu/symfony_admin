@@ -73,6 +73,13 @@ class AdminLog
     private $requestUrl = '';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="client_ip", type="string", length=64, nullable=true)
+     */
+    private $clientIp = '';
+
+    /**
      * @var DateTime
      *
      * @ORM\Column(name="create_time", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP","comment"="操作时间"})
@@ -224,6 +231,22 @@ class AdminLog
     }
 
     /**
+     * @return string
+     */
+    public function getClientIp(): string
+    {
+        return $this->clientIp;
+    }
+
+    /**
+     * @param string $clientIp
+     */
+    public function setClientIp(string $clientIp): void
+    {
+        $this->clientIp = $clientIp;
+    }
+
+    /**
      * @param $dataType
      * @param $dataId
      * @param $operateType
@@ -241,7 +264,8 @@ class AdminLog
         $adminLog->setLogData(json_encode($logData));
         $adminLog->setLogMessage($logMessage);
         $adminLog->setUserId(intval(AdminAuthService::$loginUserId));
-
+        $adminLog->setRequestUrl($_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+        $adminLog->setClientIp($_SERVER['REMOTE_ADDR']);
         return $adminLog;
     }
 }

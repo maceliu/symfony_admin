@@ -6,10 +6,15 @@ namespace SymfonyAdmin\Entity\Base;
 use SymfonyAdmin\Entity\AdminLog;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use SymfonyAdmin\Entity\AdminUser;
 
 trait LogTrait
 {
     static $logMessageRules = [];
+
+    private $logMessage = '';
+
+    private $operateType = '';
 
     /**
      * @ORM\PostPersist
@@ -18,6 +23,16 @@ trait LogTrait
      */
     public function addModifyLog(LifecycleEventArgs $args)
     {
+        if ($args->getObject() instanceof AdminUser) {
+            /** @var AdminUser $adminUser */
+            $adminUser = $args->getObject();
+            # 登录场景
+            if ($adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
+                $this->setLogMessage('登录系统');
+                $this->operateType = 'login';
+            }
+        }
+
         $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getOperateType(), $this->toArray(false), $this->getLogMessage());
         $entityManager = $args->getObjectManager();
         $entityManager->persist($adminLog);
@@ -38,9 +53,10 @@ trait LogTrait
 
     protected function getOperateType(): string
     {
-        //todo 登录时更新用户最后登录时间也记录了日志，需要优化
         # 创建时间和更新时间是否一致 一致为创建  不一致为更新
-        if ($this->getCreateTime()->getTimestamp() == $this->getUpdateTime()->getTimestamp()) {
+        if (!empty($this->operateType)) {
+            return $this->operateType;
+        } elseif ($this->getCreateTime()->getTimestamp() == $this->getUpdateTime()->getTimestamp()) {
             return 'create';
         } else {
             return 'update';
@@ -58,14 +74,21 @@ trait LogTrait
         return $this->$methodName();
     }
 
+    /**
+     * @param string $logMessage
+     */
+    public function setLogMessage(string $logMessage): void
+    {
+        $this->logMessage = $logMessage;
+    }
+
     protected function getLogMessage(): string
     {
-        $logMessage = '';
         $methodName = empty(self::$logMessageRules[self::class]) ? '' : self::$logMessageRules[self::class];
         if ($methodName && method_exists($this, $methodName)) {
-            return $logMessage . $methodName . ' : ' . $this->$methodName();
+            return $this->logMessage . $methodName . ' : ' . $this->$methodName();
         } else {
-            return $logMessage;
+            return $this->logMessage;
         }
     }
 
