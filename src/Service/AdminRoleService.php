@@ -4,6 +4,7 @@
 namespace SymfonyAdmin\Service;
 
 
+use ReflectionException;
 use SymfonyAdmin\Entity\AdminAuth;
 use SymfonyAdmin\Entity\AdminRole;
 use SymfonyAdmin\Exception\NoAuthException;
@@ -87,7 +88,12 @@ class AdminRoleService extends BaseService
     {
         $adminRole = $this->getAdminRoleRepo()->findOneByName($adminRoleRequest->getRoleName());
         if ($adminRole && $adminRole->getStatus() == StatusEnum::ON) {
-            throw new NotExistException('菜单已存在，无法重复新增！');
+            throw new NotExistException('角色组名称已存在，无法重复新增！');
+        }
+
+        $adminRole = $this->getAdminRoleRepo()->findOneByRoleCode($adminRoleRequest->getRoleCode());
+        if ($adminRole && $adminRole->getStatus() == StatusEnum::ON) {
+            throw new NotExistException('角色组编码已存在，无法重复新增！');
         }
 
         $em = $this->doctrine->getManager();
@@ -96,9 +102,39 @@ class AdminRoleService extends BaseService
         $adminRole->setRoleName($adminRoleRequest->getRoleName());
         $adminRole->setRoleCode($adminRoleRequest->getRoleCode());
         $adminRole->setStatus($adminRoleRequest->getStatus());
-        $adminRole->setParentId($adminAuth->getAdminUser()->getRoleId());
+        $adminRole->setParentId($adminRoleRequest->getParentRoleId() ?: $adminAuth->getAdminUser()->getRoleId());
         $em->persist($adminRole);
         $em->flush();
         return $adminRole->getApiFormat();
+    }
+
+    /**
+     * @param AdminAuth $adminAuth
+     * @param AdminRoleRequest $request
+     * @param array $data
+     * @return array
+     * @throws NoAuthException
+     * @throws NotExistException
+     * @throws ReflectionException
+     */
+    public function update(AdminAuth $adminAuth, AdminRoleRequest $request, array $data): array
+    {
+        $oldAdminRole = $this->getAdminRoleRepo()->findOneByName($request->getRoleName());
+        if ($oldAdminRole && $oldAdminRole->getStatus() == StatusEnum::ON) {
+            throw new NotExistException('角色组名称已存在，无法重复新增！');
+        }
+
+        $oldAdminRole = $this->getAdminRoleRepo()->findOneByRoleCode($request->getRoleCode());
+        if ($oldAdminRole && $oldAdminRole->getStatus() == StatusEnum::ON) {
+            throw new NotExistException('角色组编码已存在，无法重复新增！');
+        }
+
+        $adminRole = $this->getChildOne($adminAuth, $request);
+        $adminRole->updateFromRequest($data, $request);
+        $em = $this->doctrine->getManager();
+        $em->persist($adminRole);
+        $em->flush();
+
+        return $adminRole->toArray();
     }
 }

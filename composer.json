@@ -3,7 +3,7 @@
   "description": "A admin system base on symfony",
   "type": "library",
   "license": "MIT",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "authors": [
     {
       "name": "mace liu",
@@ -12,7 +12,7 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "php": "7.*",
+    "php": ">=7.1",
     "ext-redis": "*",
     "ext-json": "*",
     "stof/doctrine-extensions-bundle": "^1.5",

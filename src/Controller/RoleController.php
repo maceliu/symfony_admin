@@ -109,6 +109,7 @@ class RoleController extends AdminApiController
             $adminRoleRequest->setRoleName(trim($data['roleName'] ?? ''));
             $adminRoleRequest->setRoleCode(trim($data['roleCode'] ?? ''));
             $adminRoleRequest->setStatus(trim($data['status'] ?? ''));
+            $adminRoleRequest->setParentRoleId(intval($data['roleId'] ?? 0));
 
             # 添加用户组
             $menuList = $adminRoleService->create($adminAuth, $adminRoleRequest);

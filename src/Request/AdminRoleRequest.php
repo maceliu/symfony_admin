@@ -18,7 +18,7 @@ class AdminRoleRequest extends BaseRequest
 
     private $status = StatusEnum::OFF;
 
-    private $parentId = 0;
+    private $parentRoleId = 0;
 
     /**
      * @return int
@@ -72,7 +72,7 @@ class AdminRoleRequest extends BaseRequest
      * @param string $roleName
      * @throws InvalidParamsException
      */
-    public function setRoleName(string $roleName): void
+    public function setRoleName(string $roleName)
     {
         if (empty($roleName)) {
             throw new InvalidParamsException('传入参数错误！角色名称不能为空！');
@@ -92,7 +92,7 @@ class AdminRoleRequest extends BaseRequest
      * @param string $roleCode
      * @throws InvalidParamsException
      */
-    public function setRoleCode(string $roleCode): void
+    public function setRoleCode(string $roleCode)
     {
         if (empty($roleCode)) {
             throw new InvalidParamsException('传入参数错误！角色标识不能为空！');
@@ -103,21 +103,17 @@ class AdminRoleRequest extends BaseRequest
     /**
      * @return int
      */
-    public function getParentId(): int
+    public function getParentRoleId(): int
     {
-        return $this->parentId;
+        return $this->parentRoleId;
     }
 
     /**
-     * @param int $parentId
-     * @throws InvalidParamsException
+     * @param int $parentRoleId
      */
-    public function setParentId(int $parentId): void
+    public function setParentRoleId(int $parentRoleId)
     {
-        if (empty($parentId)) {
-            throw new InvalidParamsException('传入参数错误！父级角色ID不能为空！');
-        }
-        $this->parentId = $parentId;
+        $this->parentRoleId = $parentRoleId;
     }
 
 
