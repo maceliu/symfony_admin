@@ -35,7 +35,9 @@ CREATE TABLE `admin_file` (
   `file_hash` varchar(64) DEFAULT NULL COMMENT '文件哈希值',
   `create_time` datetime DEFAULT NULL COMMENT '上传时间',
   `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_filehash` (`file_hash`),
+  KEY `idx_userid` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -53,6 +55,7 @@ CREATE TABLE `admin_log` (
   `log_data` text NOT NULL COMMENT 'IP',
   `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID',
   `request_url` varchar(128) NOT NULL DEFAULT '',
+  `client_ip` varchar(64) DEFAULT NULL COMMENT '请求ip',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
   PRIMARY KEY (`id`),
   KEY `idx_userid` (`user_id`),
@@ -140,7 +143,8 @@ CREATE TABLE `admin_role` (
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_parent` (`parent_id`)
+  KEY `idx_parentid` (`parent_id`),
+  KEY `idx_rolecode` (`role_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='后台用户组';
 
 LOCK TABLES `admin_role` WRITE;
