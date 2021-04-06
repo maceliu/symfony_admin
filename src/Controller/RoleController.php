@@ -135,9 +135,13 @@ class RoleController extends AdminApiController
             $data = $this->getJsonRequest($request);
             $adminRoleRequest = new AdminRoleRequest();
             $adminRoleRequest->setId(intval($data['id'] ?? 0));
+            $adminRoleRequest->setRoleName(trim($data['roleName'] ?? ''));
+            $adminRoleRequest->setRoleCode(trim($data['roleCode'] ?? ''));
+            $adminRoleRequest->setStatus(trim($data['status'] ?? ''));
+            $adminRoleRequest->setParentRoleId(intval($data['roleId'] ?? 0));
 
             # 更新用户组
-            $menuList = $adminRoleService->update($adminAuth, $adminRoleRequest, $data);
+            $menuList = $adminRoleService->update($adminAuth, $adminRoleRequest);
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }

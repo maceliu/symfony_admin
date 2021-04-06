@@ -111,13 +111,12 @@ class AdminRoleService extends BaseService
     /**
      * @param AdminAuth $adminAuth
      * @param AdminRoleRequest $request
-     * @param array $data
      * @return array
      * @throws NoAuthException
      * @throws NotExistException
      * @throws ReflectionException
      */
-    public function update(AdminAuth $adminAuth, AdminRoleRequest $request, array $data): array
+    public function update(AdminAuth $adminAuth, AdminRoleRequest $request): array
     {
         $oldAdminRole = $this->getAdminRoleRepo()->findOneByName($request->getRoleName());
         if ($oldAdminRole && $oldAdminRole->getStatus() == StatusEnum::ON) {
