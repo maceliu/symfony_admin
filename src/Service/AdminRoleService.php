@@ -130,7 +130,10 @@ class AdminRoleService extends BaseService
         }
 
         $adminRole = $this->getChildOne($adminAuth, $request);
-        $adminRole->updateFromRequest($data, $request);
+        $adminRole->setRoleName($request->getRoleName());
+        $adminRole->setRoleCode($request->getRoleCode());
+        $adminRole->setStatus($request->getStatus());
+        $adminRole->setParentId($request->getParentRoleId() ?: $adminAuth->getAdminUser()->getRoleId());
         $em = $this->doctrine->getManager();
         $em->persist($adminRole);
         $em->flush();
