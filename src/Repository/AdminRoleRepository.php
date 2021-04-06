@@ -4,6 +4,7 @@
 namespace SymfonyAdmin\Repository;
 
 
+use Doctrine\ORM\NonUniqueResultException;
 use SymfonyAdmin\Entity\AdminRole;
 use SymfonyAdmin\Service\Base\QueryTrait;
 use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
@@ -165,6 +166,7 @@ class AdminRoleRepository extends ServiceEntityRepository
      * @param string $roleCode
      * @param int|null $id
      * @return AdminRole|NULL
+     * @throws NonUniqueResultException
      */
     public function findConflictOneOnyByNameOrCode(string $roleName, string $roleCode, int $id = null): ?AdminRole
     {
@@ -180,6 +182,6 @@ class AdminRoleRepository extends ServiceEntityRepository
 
         $qb->setMaxResults(1);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
