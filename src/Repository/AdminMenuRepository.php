@@ -80,7 +80,7 @@ class AdminMenuRepository extends ServiceEntityRepository
      * @param string $path
      * @return object|AdminMenu
      */
-    public function findOneByPath(string $path)
+    public function findOneByPath(string $path): ?AdminMenu
     {
         return $this->findOneBy(['path' => $path]);
     }
@@ -89,7 +89,7 @@ class AdminMenuRepository extends ServiceEntityRepository
      * @param int $id
      * @return object|AdminMenu
      */
-    public function findOneById(int $id)
+    public function findOneById(int $id): ?AdminMenu
     {
         return $this->findOneBy(['id' => $id]);
     }

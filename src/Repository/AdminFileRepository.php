@@ -19,7 +19,7 @@ class AdminFileRepository extends ServiceEntityRepository
      * @param string $fileHash
      * @return object|AdminFile
      */
-    public function findOneByFileHash(string $fileHash)
+    public function findOneByFileHash(string $fileHash): ?AdminFile
     {
         return $this->findOneBy(['fileHash' => $fileHash]);
     }
@@ -28,7 +28,7 @@ class AdminFileRepository extends ServiceEntityRepository
      * @param int $id
      * @return object|AdminFile
      */
-    public function findOneByFileId(int $id)
+    public function findOneByFileId(int $id): ?AdminFile
     {
         return $this->findOneBy(['id' => $id]);
     }

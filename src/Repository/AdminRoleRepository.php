@@ -27,27 +27,27 @@ class AdminRoleRepository extends ServiceEntityRepository
 
     /**
      * @param string $roleName
-     * @return AdminRole|object
+     * @return AdminRole|object|NULL
      */
-    public function findOneByName(string $roleName): AdminRole
+    public function findOneByName(string $roleName): ?AdminRole
     {
         return $this->findOneBy(['roleName' => $roleName]);
     }
 
     /**
      * @param int $id
-     * @return AdminRole|object
+     * @return AdminRole|object|NULL
      */
-    public function findOneById(int $id): AdminRole
+    public function findOneById(int $id): ?AdminRole
     {
         return $this->findOneBy(['id' => $id]);
     }
 
     /**
      * @param string $roleCode
-     * @return AdminRole|object
+     * @return AdminRole|object|NULL
      */
-    public function findOneByRoleCode(string $roleCode): AdminRole
+    public function findOneByRoleCode(string $roleCode): ?AdminRole
     {
         return $this->findOneBy(['roleCode' => $roleCode]);
     }

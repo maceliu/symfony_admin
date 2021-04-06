@@ -30,18 +30,18 @@ class AdminUserRepository extends ServiceEntityRepository
 
     /**
      * @param int $userId
-     * @return AdminUser|object
+     * @return AdminUser|object|NULL
      */
-    public function findOneById(int $userId)
+    public function findOneById(int $userId): ?AdminUser
     {
         return $this->findOneBy(['id' => $userId]);
     }
 
     /**
      * @param string $username
-     * @return AdminUser|object
+     * @return AdminUser|object|NULL
      */
-    public function findOneByUsername(string $username)
+    public function findOneByUsername(string $username): ?AdminUser
     {
         return $this->findOneBy(['username' => $username]);
     }

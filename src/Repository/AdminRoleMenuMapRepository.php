@@ -28,9 +28,9 @@ class AdminRoleMenuMapRepository extends ServiceEntityRepository
     /**
      * @param int $roleId
      * @param int $menuId
-     * @return object|AdminRoleMenuMap
+     * @return object|AdminRoleMenuMap|NULL
      */
-    public function findOnOneByRoleIdAndMenuId(int $roleId, int $menuId)
+    public function findOnOneByRoleIdAndMenuId(int $roleId, int $menuId): ?AdminRoleMenuMap
     {
         return $this->findOneBy(['roleId' => $roleId, 'menuId' => $menuId, 'status' => StatusEnum::ON]);
     }
@@ -38,9 +38,9 @@ class AdminRoleMenuMapRepository extends ServiceEntityRepository
     /**
      * @param int $roleId
      * @param int $menuId
-     * @return object|AdminRoleMenuMap
+     * @return object|AdminRoleMenuMap|NULL
      */
-    public function findOneByRoleIdAndMenuId(int $roleId, int $menuId)
+    public function findOneByRoleIdAndMenuId(int $roleId, int $menuId): ?AdminRoleMenuMap
     {
         return $this->findOneBy(['roleId' => $roleId, 'menuId' => $menuId]);
     }
