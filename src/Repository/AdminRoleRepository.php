@@ -7,14 +7,11 @@ namespace SymfonyAdmin\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use SymfonyAdmin\Entity\AdminRole;
 use SymfonyAdmin\Service\Base\QueryTrait;
-use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
 use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
-use SymfonyAdmin\Utils\Enum\StatusEnum;
 use SymfonyAdmin\Utils\PaginatorResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use function Doctrine\ORM\QueryBuilder;
 
 class AdminRoleRepository extends ServiceEntityRepository
 {
@@ -22,6 +19,7 @@ class AdminRoleRepository extends ServiceEntityRepository
 
     static $searchMap = [
         'roleName' => SearchTypeEnum::FUZZY,
+        'status' => SearchTypeEnum::PRECISE,
     ];
 
     public function __construct(ManagerRegistry $registry)
