@@ -14,7 +14,7 @@ trait LogTrait
 
     public $logMessage = '';
 
-    private $operateType = '';
+    public $operateType = '';
 
     /**
      * @ORM\PostPersist
