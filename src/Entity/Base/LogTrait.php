@@ -12,7 +12,7 @@ trait LogTrait
 {
     static $logMessageRules = [];
 
-    private $logMessage = '';
+    public $logMessage = '';
 
     private $operateType = '';
 
