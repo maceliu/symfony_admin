@@ -136,4 +136,22 @@ class AdminRoleService extends BaseService
 
         return $adminRole->toArray();
     }
+
+    /**
+     * @param AdminAuth $adminAuth
+     * @param AdminRoleRequest $request
+     * @return array
+     * @throws NoAuthException
+     * @throws NotExistException
+     * @throws ReflectionException
+     */
+    public function updateStatus(AdminAuth $adminAuth, AdminRoleRequest $request): array
+    {
+        $adminRole = $this->getChildOne($adminAuth, $request);
+        $adminRole->setStatus($request->getStatus());
+        $em = $this->doctrine->getManager();
+        $em->persist($adminRole);
+        $em->flush();
+        return $adminRole->toArray();
+    }
 }

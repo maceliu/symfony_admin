@@ -150,6 +150,31 @@ class RoleController extends AdminApiController
     }
 
     /**
+     * @Route("/admin/role/updateStatus", name="updateRoleStatus")
+     * @param Request $request
+     * @param LoggerInterface $errorLogger
+     * @param AdminRoleService $adminRoleService
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request, LoggerInterface $errorLogger, AdminRoleService $adminRoleService): JsonResponse
+    {
+        try {
+            $adminAuth = $this->adminAuthService->getLoginAuthInfo();
+            $data = $this->getJsonRequest($request);
+            $adminRoleRequest = new AdminRoleRequest();
+            $adminRoleRequest->setId(intval($data['id'] ?? 0));
+            $adminRoleRequest->setStatus(trim($data['status'] ?? ''));
+
+            # 更新用户组状态
+            $menuList = $adminRoleService->updateStatus($adminAuth, $adminRoleRequest);
+        } catch (Exception $e) {
+            return ApiResponse::exception($e, $errorLogger);
+        }
+
+        return ApiResponse::success($menuList);
+    }
+
+    /**
      * @Route("/admin/role/delete", name="deleteRole")
      * @param Request $request
      * @param LoggerInterface $errorLogger
