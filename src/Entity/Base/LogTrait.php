@@ -27,7 +27,7 @@ trait LogTrait
             /** @var AdminUser $adminUser */
             $adminUser = $args->getObject();
             # 登录场景
-            if ($adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
+            if (!empty($adminUser->getLoginTime()) && $adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
                 $this->setLogMessage('登录系统');
                 $this->operateType = 'login';
             }
