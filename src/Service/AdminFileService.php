@@ -102,6 +102,7 @@ class AdminFileService extends BaseService
             $ossResponseArr = AliOssRemoteService::uploadImgFile($filePath, $file);
             if (!empty($ossResponseArr['info']['url'])) {
                 $urlArr = parse_url(trim($ossResponseArr['info']['url']));
+                $urlArr['scheme'] .= strpos($urlArr['scheme'], 's') ? '' : 's';
                 $adminFile->setFileHost($urlArr['scheme'] . '://' . $urlArr['host']);
                 $adminFile->setFilePath($urlArr['path']);
                 $adminFile->setFileSize($fileSize);
