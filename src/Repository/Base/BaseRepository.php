@@ -4,6 +4,7 @@
 namespace SymfonyAdmin\Repository\Base;
 
 
+use SymfonyAdmin\Entity\AdminFile;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -40,9 +41,9 @@ class BaseRepository extends ServiceEntityRepository
 
     /**
      * @param int $id
-     * @return BaseEntity
+     * @return BaseEntity|AdminFile
      */
-    public function findOneById(int $id): ?BaseEntity
+    public function findOneById(int $id)
     {
         return $this->findOneBy(['id' => $id]);
     }
