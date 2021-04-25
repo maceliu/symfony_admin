@@ -185,7 +185,7 @@ class BaseEntity
      * @param BaseRequest $request
      * @return mixed
      */
-    protected function createOrUpdate(BaseRequest $request): BaseEntity
+    public function createOrUpdate(BaseRequest $request): BaseEntity
     {
         return new self();
     }
