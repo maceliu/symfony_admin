@@ -10,13 +10,13 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class PaginatorResult
 {
     /** @var int */
-    private $pageNum = 1;
+    private $pageNum = 10;
 
     /** @var int */
     private $rowsTotal = 0;
 
     /** @var int */
-    private $pageSize = 10;
+    private $pageSize = 1;
 
     /** @var int */
     private $totalPage = 0;
@@ -32,16 +32,30 @@ class PaginatorResult
      * @param Paginator|null $paginator
      * @param int $pageNum
      * @param int $pageSize
+     * @param int $poor
      */
-    public function __construct(Paginator $paginator, int $pageNum = 1, int $pageSize = 10)
+    public function __construct(Paginator $paginator, int $pageNum = 10, int $pageSize = 1, $poor = 0)
     {
-        $paginator->getQuery()
-            ->setFirstResult($pageSize * ($pageNum - 1)) // Offset
-            ->setMaxResults($pageSize); // Limit
-
+        if ($pageNum == 1) {
+            $pageSize += $poor;
+        }
+        if (empty($poor)) {
+            $paginator->getQuery()
+                ->setFirstResult($pageSize * ($pageNum - 1)) // Offset
+                ->setMaxResults($pageSize); // Limit
+        } else {
+            $paginator->getQuery()
+                ->setFirstResult(max($pageSize * ($pageNum - 1) + $poor, 0)) // Offset
+                ->setMaxResults($pageSize); // Limit
+        }
         if ($paginator) {
             $this->setRowsTotal($paginator->count());
-            $this->setTotalPage(ceil($paginator->count() / $pageSize));
+            if (empty($poor)) {
+                $this->setTotalPage(ceil($paginator->count() / $pageSize));
+            } else {
+                $this->setTotalPage(ceil(($paginator->count() - $poor) / $pageSize));
+            }
+
             $this->setPageSize($pageSize);
             $this->setPageNum($pageNum);
             $this->setEntityList($paginator->getQuery()->getResult());
