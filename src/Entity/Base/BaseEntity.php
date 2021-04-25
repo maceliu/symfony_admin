@@ -182,11 +182,7 @@ class BaseEntity
     }
 
     /**
-     * @param BaseRequest $request
-     * @return mixed
+     * @param $request
      */
-    public function createOrUpdate(BaseRequest $request): BaseEntity
-    {
-        return new self();
-    }
+    public function setFields($request){}
 }
