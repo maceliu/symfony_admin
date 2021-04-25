@@ -15,7 +15,7 @@ use ReflectionException;
 use ReflectionProperty;
 use Doctrine\ORM\Mapping as ORM;
 
-abstract class BaseEntity
+class BaseEntity
 {
     # 数组化展示时不显示的字段
     protected $hiddenProperties = [];
@@ -185,5 +185,8 @@ abstract class BaseEntity
      * @param BaseRequest $request
      * @return mixed
      */
-    abstract function createOrUpdate(BaseRequest $request);
+    protected function createOrUpdate(BaseRequest $request): BaseEntity
+    {
+        return new self();
+    }
 }
