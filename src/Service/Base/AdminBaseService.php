@@ -5,6 +5,7 @@ namespace SymfonyAdmin\Service\Base;
 
 
 use SymfonyAdmin\Entity\Base\BaseEntity;
+use SymfonyAdmin\Exception\NotExistException;
 use SymfonyAdmin\Request\Base\BaseRequest;
 use Doctrine\Persistence\ManagerRegistry;
 use ReflectionException;
@@ -40,6 +41,20 @@ class AdminBaseService extends BaseService
 
     /**
      * @return array
+     * @throws NotExistException|ReflectionException
+     */
+    public function getOne(): array
+    {
+        /** @var BaseEntity $entity */
+        $entity = $this->doctrine->getRepository($this->entity)->findOneById($this->id);
+        if (!$entity) {
+            throw new NotExistException('查询的数据不存在！');
+        }
+        return $entity->toArray();
+    }
+
+    /**
+     * @return array
      * @throws ReflectionException
      */
     public function getList(): array
@@ -57,9 +72,11 @@ class AdminBaseService extends BaseService
     /**
      * @param BaseRequest $request
      * @return array
+     * @throws ReflectionException
      */
     public function createOrUpdate(BaseRequest $request): array
     {
+        /** @var BaseEntity $entity */
         $entity = null;
         if (!empty($this->id)) {
             $entity = $this->doctrine->getRepository($this->entity)->findOneById($this->id);
