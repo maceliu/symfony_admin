@@ -5,16 +5,14 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminUser;
-use SymfonyAdmin\Service\Base\QueryTrait;
+use SymfonyAdmin\Repository\Base\BaseRepository;
 use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
 use SymfonyAdmin\Utils\PaginatorResult;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Doctrine\Persistence\ManagerRegistry;
 
-class AdminUserRepository extends ServiceEntityRepository
+class AdminUserRepository extends BaseRepository
 {
-    use QueryTrait;
+    protected $entity = AdminUser::class;
 
     static $searchMap = [
         'id' => SearchTypeEnum::PRECISE,
@@ -22,20 +20,6 @@ class AdminUserRepository extends ServiceEntityRepository
         'trueName' => SearchTypeEnum::FUZZY,
         'status' => SearchTypeEnum::PRECISE,
     ];
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AdminUser::class);
-    }
-
-    /**
-     * @param int $userId
-     * @return AdminUser|object|NULL
-     */
-    public function findOneById(int $userId): ?AdminUser
-    {
-        return $this->findOneBy(['id' => $userId]);
-    }
 
     /**
      * @param string $username

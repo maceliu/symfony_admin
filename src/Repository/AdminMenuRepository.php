@@ -5,19 +5,15 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminMenu;
+use SymfonyAdmin\Repository\Base\BaseRepository;
 use SymfonyAdmin\Utils\Enum\Menu\MenuTypeEnum;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
 use SymfonyAdmin\Utils\MenuFormat;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use ReflectionException;
 
-class AdminMenuRepository extends ServiceEntityRepository
+class AdminMenuRepository extends BaseRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AdminMenu::class);
-    }
+    protected $entity = AdminMenu::class;
 
     /**
      * @param array $menuIds
@@ -83,15 +79,6 @@ class AdminMenuRepository extends ServiceEntityRepository
     public function findOneByPath(string $path): ?AdminMenu
     {
         return $this->findOneBy(['path' => $path]);
-    }
-
-    /**
-     * @param int $id
-     * @return object|AdminMenu
-     */
-    public function findOneById(int $id): ?AdminMenu
-    {
-        return $this->findOneBy(['id' => $id]);
     }
 
     /**

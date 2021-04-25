@@ -5,15 +5,11 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminFile;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use SymfonyAdmin\Repository\Base\BaseRepository;
 
-class AdminFileRepository extends ServiceEntityRepository
+class AdminFileRepository extends BaseRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AdminFile::class);
-    }
+    protected $entity = AdminFile::class;
 
     /**
      * @param string $fileHash
@@ -22,15 +18,6 @@ class AdminFileRepository extends ServiceEntityRepository
     public function findOneByFileHash(string $fileHash): ?AdminFile
     {
         return $this->findOneBy(['fileHash' => $fileHash]);
-    }
-
-    /**
-     * @param int $id
-     * @return object|AdminFile
-     */
-    public function findOneByFileId(int $id): ?AdminFile
-    {
-        return $this->findOneBy(['id' => $id]);
     }
 
 }

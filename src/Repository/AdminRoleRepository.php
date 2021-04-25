@@ -6,26 +6,19 @@ namespace SymfonyAdmin\Repository;
 
 use Doctrine\ORM\NonUniqueResultException;
 use SymfonyAdmin\Entity\AdminRole;
-use SymfonyAdmin\Service\Base\QueryTrait;
+use SymfonyAdmin\Repository\Base\BaseRepository;
 use SymfonyAdmin\Utils\Enum\SearchTypeEnum;
 use SymfonyAdmin\Utils\PaginatorResult;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Doctrine\Persistence\ManagerRegistry;
 
-class AdminRoleRepository extends ServiceEntityRepository
+class AdminRoleRepository extends BaseRepository
 {
-    use QueryTrait;
+    protected $entity = AdminRole::class;
 
     static $searchMap = [
         'roleName' => SearchTypeEnum::FUZZY,
         'status' => SearchTypeEnum::PRECISE,
     ];
-
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AdminRole::class);
-    }
 
     /**
      * @param string $roleName
@@ -34,15 +27,6 @@ class AdminRoleRepository extends ServiceEntityRepository
     public function findOneByName(string $roleName): ?AdminRole
     {
         return $this->findOneBy(['roleName' => $roleName]);
-    }
-
-    /**
-     * @param int $id
-     * @return AdminRole|object|NULL
-     */
-    public function findOneById(int $id): ?AdminRole
-    {
-        return $this->findOneBy(['id' => $id]);
     }
 
     /**

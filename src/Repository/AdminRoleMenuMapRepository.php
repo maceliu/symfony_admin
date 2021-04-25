@@ -5,16 +5,12 @@ namespace SymfonyAdmin\Repository;
 
 
 use SymfonyAdmin\Entity\AdminRoleMenuMap;
+use SymfonyAdmin\Repository\Base\BaseRepository;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 
-class AdminRoleMenuMapRepository extends ServiceEntityRepository
+class AdminRoleMenuMapRepository extends BaseRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AdminRoleMenuMap::class);
-    }
+    protected $entity = AdminRoleMenuMap::class;
 
     /**
      * @param int $roleId
