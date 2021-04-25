@@ -86,7 +86,7 @@ class AdminBaseService extends BaseService
             $entity = new $this->entity($request);
         }
 
-        $entity->createOrUpdate($request);
+        $entity->setFields($request);
         $this->doctrine->getManager()->persist($entity);
         $this->doctrine->getManager()->flush();
 
