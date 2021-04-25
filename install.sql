@@ -111,9 +111,14 @@ VALUES
 	(32,'product-list','/admin/home/fileUpload','上传文件',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
 	(33,'product-list','/admin/home/userUpdate','更新用户信息',5,2,0,'node','on','接口',1,0,'2020-12-29 00:00:00','2021-01-09 11:28:18',NULL),
     (48,'product-list', '/admin/role/create', '创建用户组', 3, 3, 0, 'node', 'on', '接口', 0, 0, '2020-12-29 00:00:00', '2021-01-18 23:59:42', NULL),
-    (49, 'product-list', '/admin/user/create', '添加用户接口', 2, 3, 0, 'node', 'on', '接口', 0, 0, '2020-12-29 00:00:00', '2021-01-09 11:28:18', NULL);
+    (49, 'product-list', '/admin/user/create', '添加用户接口', 2, 3, 0, 'node', 'on', '接口', 0, 0, '2020-12-29 00:00:00', '2021-01-09 11:28:18', NULL)
+    (50, 'product-list', '/admin/role/listPage', '分页获取用户下属角色列表', 5, 2, 0, 'node', 'on', '接口', 1, 0, '2020-12-29 00:00:00', '2021-01-18 23:59:42', NULL),
+    (51, 'product-list', '/admin/role/updateStatus', '更新用户组状态', 5, 2, 0, 'node', 'on', '接口', 1, 0, '2020-12-29 00:00:00', '2021-01-18 23:59:42', NULL),
+    (52, 'product-list', '/admin/menu/create', '创建菜单接口', 4, 3, 0, 'node', 'on', '', 0, 1, '2021-04-08 10:49:12', '2021-04-08 10:49:35', NULL),
+    (53, 'product-list', '/admin/home/index', '首页信息', 5, 2, 0, 'node', 'on', '接口', 1, 0, '2020-12-29 00:00:00', '2021-01-18 23:59:42', NULL);;
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 
 # Dump of table admin_role
