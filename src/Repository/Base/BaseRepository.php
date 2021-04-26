@@ -4,7 +4,6 @@
 namespace SymfonyAdmin\Repository\Base;
 
 
-use App\Repository\PosterLibraryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use SymfonyAdmin\Entity\AdminFile;
