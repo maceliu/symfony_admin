@@ -4,6 +4,9 @@
 namespace SymfonyAdmin\Repository\Base;
 
 
+use App\Repository\PosterLibraryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use SymfonyAdmin\Entity\AdminFile;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -21,8 +24,12 @@ class BaseRepository extends ServiceEntityRepository
 
     protected $alias = 'b';
 
-    public function __construct(ManagerRegistry $registry)
+    /** @var Request */
+    protected $request;
+
+    public function __construct(ManagerRegistry $registry, RequestStack $requestStack)
     {
+        $this->request = $requestStack->getCurrentRequest();
         parent::__construct($registry, $this->entityClass);
     }
 
@@ -57,6 +64,13 @@ class BaseRepository extends ServiceEntityRepository
      */
     public function createQueryBuilderByConditions(QueryBuilder $qb, array $conditions = []): QueryBuilder
     {
+        $conditions = [];
+        foreach ($this->searchMap as $searchKey => $type) {
+            if ($this->request->query->get($searchKey)) {
+                $conditions[$searchKey] = trim($this->request->query->get($searchKey));
+            }
+        }
+
         $keyStr = '';
         if (!empty($this->searchMap)) {
             foreach ($conditions as $key => $value) {
