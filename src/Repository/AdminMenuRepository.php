@@ -13,7 +13,7 @@ use ReflectionException;
 
 class AdminMenuRepository extends BaseRepository
 {
-    protected $entity = AdminMenu::class;
+    protected $entityClass = AdminMenu::class;
 
     /**
      * @param array $menuIds

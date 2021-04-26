@@ -13,9 +13,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class AdminRoleRepository extends BaseRepository
 {
-    protected $entity = AdminRole::class;
+    protected $entityClass = AdminRole::class;
 
-    static $searchMap = [
+    public $searchMap = [
         'roleName' => SearchTypeEnum::FUZZY,
         'status' => SearchTypeEnum::PRECISE,
     ];
@@ -136,11 +136,11 @@ class AdminRoleRepository extends BaseRepository
      */
     public function findAllByIdsWithPage(array $ids, int $pageNum = 1, int $pageSize = 10, array $conditions = []): PaginatorResult
     {
-        $qb = $this->createQueryBuilder('r');
-        $qb->where($qb->expr()->in('r.id', $ids))
-            ->orderBy('r.id', 'desc');
+        $qb = $this->createQueryBuilder($this->alias);
+        $qb->where($qb->expr()->in("{$this->alias}.id", $ids))
+            ->orderBy("{$this->alias}.id", 'desc');
 
-        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'r', $conditions);
+        $qb = $this->createQueryBuilderByConditions($qb, $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }
@@ -154,16 +154,16 @@ class AdminRoleRepository extends BaseRepository
      */
     public function findConflictOneOnyByNameOrCode(string $roleName, string $roleCode, int $id = null): ?AdminRole
     {
-        $qb = $this->createQueryBuilder('r');
+        $qb = $this->createQueryBuilder($this->alias);
         $qb->where($qb->expr()->orX(
-            $qb->expr()->eq('r.roleName', ':roleName'),
-            $qb->expr()->eq('r.roleCode', ':roleCode')
+            $qb->expr()->eq("{$this->alias}.roleName", ':roleName'),
+            $qb->expr()->eq("{$this->alias}.roleCode", ':roleCode')
         ))
             ->setParameter('roleName', $roleName)
             ->setParameter('roleCode', $roleCode);
 
         if (!empty($id)) {
-            $qb->andWhere($qb->expr()->neq('r.id', $id));
+            $qb->andWhere($qb->expr()->neq("{$this->alias}.id", $id));
         }
 
         $qb->setMaxResults(1);

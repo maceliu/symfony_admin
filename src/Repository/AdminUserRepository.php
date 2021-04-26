@@ -12,9 +12,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class AdminUserRepository extends BaseRepository
 {
-    protected $entity = AdminUser::class;
+    protected $entityClass = AdminUser::class;
 
-    static $searchMap = [
+    public $searchMap = [
         'id' => SearchTypeEnum::PRECISE,
         'username' => SearchTypeEnum::FUZZY,
         'trueName' => SearchTypeEnum::FUZZY,
@@ -39,10 +39,10 @@ class AdminUserRepository extends BaseRepository
      */
     public function findAllByIdsWithPage(array $ids, int $pageNum = 1, int $pageSize = 10, array $conditions = []): PaginatorResult
     {
-        $qb = $this->createQueryBuilder('u');
-        $qb->where($qb->expr()->in('u.roleId', $ids))
-            ->orderBy('u.id', 'desc');
-        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'u', $conditions);
+        $qb = $this->createQueryBuilder($this->alias);
+        $qb->where($qb->expr()->in("{$this->alias}.roleId", $ids))
+            ->orderBy("{$this->alias}.id", 'desc');
+        $qb = $this->createQueryBuilderByConditions($qb, $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }

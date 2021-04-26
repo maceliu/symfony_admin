@@ -10,7 +10,7 @@ use SymfonyAdmin\Utils\Enum\StatusEnum;
 
 class AdminRoleMenuMapRepository extends BaseRepository
 {
-    protected $entity = AdminRoleMenuMap::class;
+    protected $entityClass = AdminRoleMenuMap::class;
 
     /**
      * @param int $roleId

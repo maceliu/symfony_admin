@@ -9,7 +9,7 @@ use SymfonyAdmin\Repository\Base\BaseRepository;
 
 class AdminFileRepository extends BaseRepository
 {
-    protected $entity = AdminFile::class;
+    protected $entityClass = AdminFile::class;
 
     /**
      * @param string $fileHash

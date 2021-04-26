@@ -15,13 +15,15 @@ use SymfonyAdmin\Utils\PaginatorResult;
 
 class BaseRepository extends ServiceEntityRepository
 {
-    static $searchMap = [];
+    public $searchMap = [];
 
-    protected $entity;
+    protected $entityClass;
+
+    protected $alias = 'b';
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, $this->entity);
+        parent::__construct($registry, $this->entityClass);
     }
 
     /**
@@ -32,8 +34,8 @@ class BaseRepository extends ServiceEntityRepository
      */
     public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = []): PaginatorResult
     {
-        $qb = $this->createQueryBuilder('b');
-        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'b', $conditions);
+        $qb = $this->createQueryBuilder($this->alias);
+        $qb = $this->createQueryBuilderByConditions($qb, $conditions);
         $qb->orderBy('b.createTime', 'desc');
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
@@ -50,23 +52,21 @@ class BaseRepository extends ServiceEntityRepository
 
     /**
      * @param QueryBuilder $qb
-     * @param array $searchMap
-     * @param string $alias
      * @param array $conditions
      * @return QueryBuilder
      */
-    public function findAllByConditionsWithPage(QueryBuilder $qb, array $searchMap = [], string $alias = '', array $conditions = []): QueryBuilder
+    public function createQueryBuilderByConditions(QueryBuilder $qb, array $conditions = []): QueryBuilder
     {
         $keyStr = '';
-        if (!empty($searchMap)) {
+        if (!empty($this->searchMap)) {
             foreach ($conditions as $key => $value) {
-                if (empty($searchMap[$key])) {
+                if (empty($this->searchMap[$key])) {
                     continue;
                 }
-                if ($alias != "") {
-                    $keyStr = "{$alias}" . '.' . "{$key}";
+                if ($this->alias != "") {
+                    $keyStr = "{$this->alias}" . '.' . "{$key}";
                 }
-                switch ($searchMap[$key]) {
+                switch ($this->searchMap[$key]) {
                     case SearchTypeEnum::FUZZY:
                         $qb->andWhere("{$keyStr} LIKE :{$key}")
                             ->setParameter($key, "%{$value}%");
@@ -84,8 +84,8 @@ class BaseRepository extends ServiceEntityRepository
     /**
      * @return array
      */
-    public static function getSearchMap(): array
+    public function getSearchMap(): array
     {
-        return self::$searchMap;
+        return $this->searchMap;
     }
 }
