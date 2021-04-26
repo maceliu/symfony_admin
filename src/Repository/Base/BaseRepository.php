@@ -63,7 +63,6 @@ class BaseRepository extends ServiceEntityRepository
      */
     public function createQueryBuilderByConditions(QueryBuilder $qb, array $conditions = []): QueryBuilder
     {
-        $conditions = [];
         foreach ($this->searchMap as $searchKey => $type) {
             if ($this->request->query->get($searchKey)) {
                 $conditions[$searchKey] = trim($this->request->query->get($searchKey));
