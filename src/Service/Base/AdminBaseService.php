@@ -4,6 +4,7 @@
 namespace SymfonyAdmin\Service\Base;
 
 
+use DateTime;
 use SymfonyAdmin\Entity\Base\BaseEntity;
 use SymfonyAdmin\Exception\NotExistException;
 use SymfonyAdmin\Request\Base\BaseRequest;
@@ -16,7 +17,7 @@ class AdminBaseService extends BaseService
 {
 
     /** @var string */
-    protected $entity;
+    protected $entityClass;
 
     /** @var int */
     protected $id = 0;
@@ -30,12 +31,20 @@ class AdminBaseService extends BaseService
     /** @var Request */
     protected $request;
 
+    /** @var BaseEntity */
+    protected $entity = null;
+
     public function __construct(ManagerRegistry $doctrine, RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
         $this->pageNum = intval($this->request->get('pageNum', 1));
         $this->pageSize = intval($this->request->get('pageSize', 10));
         $this->id = intval($this->request->get('id', 0));
+
+        if (!empty($this->id)) {
+            $this->entity = $this->doctrine->getRepository($this->entityClass)->findOneById($this->id);
+        }
+
         parent::__construct($doctrine);
     }
 
@@ -45,12 +54,10 @@ class AdminBaseService extends BaseService
      */
     public function getOne(): array
     {
-        /** @var BaseEntity $entity */
-        $entity = $this->doctrine->getRepository($this->entity)->findOneById($this->id);
-        if (!$entity) {
+        if (!$this->entity) {
             throw new NotExistException('查询的数据不存在！');
         }
-        return $entity->toArray();
+        return $this->entity->toArray();
     }
 
     /**
@@ -59,7 +66,16 @@ class AdminBaseService extends BaseService
      */
     public function getList(): array
     {
-        $robotPaginator = $this->doctrine->getRepository($this->entity)->findAllWithPage($this->pageNum, $this->pageSize);
+        # 搜索条件获取
+        $searchConditions = [];
+        foreach ($this->doctrine->getRepository($this->entityClass)->getSearchMap() as $searchKey => $type) {
+            if ($this->request->query->get($searchKey)) {
+                $searchConditions[$searchKey] = trim($this->request->query->get($searchKey));
+            }
+        }
+
+        # 执行分页查询
+        $robotPaginator = $this->doctrine->getRepository($this->entityClass)->findAllWithPage($this->pageNum, $this->pageSize, $searchConditions);
         $robotList = [];
         foreach ($robotPaginator->getEntityList() as $entity) {
             /** @var  BaseEntity $entity */
@@ -76,21 +92,35 @@ class AdminBaseService extends BaseService
      */
     public function createOrUpdate(BaseRequest $request): array
     {
-        /** @var BaseEntity $entity */
-        $entity = null;
-        if (!empty($this->id)) {
-            $entity = $this->doctrine->getRepository($this->entity)->findOneById($this->id);
+        if (!$this->entity) {
+            $this->entity = new $this->entityClass($request);
         }
 
-        if (!$entity) {
-            $entity = new $this->entity($request);
-        }
-
-        $entity->setFields($request);
-        $this->doctrine->getManager()->persist($entity);
+        $this->entity->setFields($request);
+        $this->doctrine->getManager()->persist($this->entity);
         $this->doctrine->getManager()->flush();
 
-        return $entity->toArray();
+        return $this->entity->toArray();
+    }
+
+    /**
+     * @return bool
+     * @throws NotExistException
+     */
+    public function deleteOne(): bool
+    {
+        if (!$this->entity) {
+            throw new NotExistException('查询的数据不存在！' . $this->id);
+        }
+
+        if (method_exists($this->entity, 'setDeletedAt')) {
+            $this->entity->setDeletedAt(new DateTime());
+            $this->doctrine->getManager()->persist($this->entity);
+        } else {
+            $this->doctrine->getManager()->remove($this->entity);
+        }
+        $this->doctrine->getManager()->flush();
+        return true;
     }
 
 }

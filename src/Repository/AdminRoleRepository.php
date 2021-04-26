@@ -15,7 +15,7 @@ class AdminRoleRepository extends BaseRepository
 {
     protected $entity = AdminRole::class;
 
-    static $searchMap = [
+    public $searchMap = [
         'roleName' => SearchTypeEnum::FUZZY,
         'status' => SearchTypeEnum::PRECISE,
     ];
@@ -140,7 +140,7 @@ class AdminRoleRepository extends BaseRepository
         $qb->where($qb->expr()->in('r.id', $ids))
             ->orderBy('r.id', 'desc');
 
-        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'r', $conditions);
+        $qb = $this->findAllByConditionsWithPage($qb, $this->searchMap, 'r', $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }
