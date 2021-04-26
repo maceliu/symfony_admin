@@ -37,9 +37,12 @@ class AdminBaseService extends BaseService
     public function __construct(ManagerRegistry $doctrine, RequestStack $requestStack)
     {
         $this->request = $requestStack->getCurrentRequest();
-        $this->pageNum = intval($this->request->get('pageNum', 1));
-        $this->pageSize = intval($this->request->get('pageSize', 10));
-        $this->id = intval($this->request->get('id', 0));
+
+        if ($this->request) {
+            $this->pageNum = intval($this->request->get('pageNum', 1));
+            $this->pageSize = intval($this->request->get('pageSize', 10));
+            $this->id = intval($this->request->get('id', 0));
+        }
 
         if (!empty($this->id)) {
             $this->entity = $this->doctrine->getRepository($this->entityClass)->findOneById($this->id);
