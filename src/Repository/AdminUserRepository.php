@@ -14,7 +14,7 @@ class AdminUserRepository extends BaseRepository
 {
     protected $entity = AdminUser::class;
 
-    public $searchMap = [
+    static $searchMap = [
         'id' => SearchTypeEnum::PRECISE,
         'username' => SearchTypeEnum::FUZZY,
         'trueName' => SearchTypeEnum::FUZZY,
@@ -42,7 +42,7 @@ class AdminUserRepository extends BaseRepository
         $qb = $this->createQueryBuilder('u');
         $qb->where($qb->expr()->in('u.roleId', $ids))
             ->orderBy('u.id', 'desc');
-        $qb = $this->findAllByConditionsWithPage($qb, $this->searchMap, 'u', $conditions);
+        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'u', $conditions);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }

@@ -15,7 +15,7 @@ use SymfonyAdmin\Utils\PaginatorResult;
 
 class BaseRepository extends ServiceEntityRepository
 {
-    public $searchMap = [];
+    static $searchMap = [];
 
     protected $entity;
 
@@ -33,7 +33,7 @@ class BaseRepository extends ServiceEntityRepository
     public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = []): PaginatorResult
     {
         $qb = $this->createQueryBuilder('b');
-        $qb = $this->findAllByConditionsWithPage($qb, $this->searchMap, 'b', $conditions);
+        $qb = $this->findAllByConditionsWithPage($qb, self::$searchMap, 'b', $conditions);
         $qb->orderBy('b.createTime', 'desc');
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
@@ -84,8 +84,8 @@ class BaseRepository extends ServiceEntityRepository
     /**
      * @return array
      */
-    public function getSearchMap(): array
+    public static function getSearchMap(): array
     {
-        return $this->searchMap;
+        return self::$searchMap;
     }
 }
