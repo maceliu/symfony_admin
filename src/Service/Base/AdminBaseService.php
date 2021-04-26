@@ -44,7 +44,7 @@ class AdminBaseService extends BaseService
         }
 
         if (!empty($this->id)) {
-            $this->entity = $this->doctrine->getRepository($this->entityClass)->findOneById($this->id);
+            $this->entity = $doctrine->getRepository($this->entityClass)->findOneById($this->id);
         }
 
         parent::__construct($doctrine);
