@@ -23,6 +23,8 @@ class BaseRepository extends ServiceEntityRepository
 
     protected $alias = 'b';
 
+    protected $findAllCriteria = [];
+
     /** @var Request */
     protected $request;
 
@@ -47,6 +49,14 @@ class BaseRepository extends ServiceEntityRepository
         $qb->orderBy("{$this->alias}.{$orderBy}", $sort);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
+    }
+
+    /**
+     * @return BaseEntity[]
+     */
+    public function findAllByCriteria(): array
+    {
+        return $this->findBy($this->findAllCriteria);
     }
 
     /**

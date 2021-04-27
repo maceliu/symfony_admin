@@ -77,14 +77,30 @@ class AdminBaseService extends BaseService
         }
 
         # 执行分页查询
-        $robotPaginator = $this->doctrine->getRepository($this->entityClass)->findAllWithPage($this->pageNum, $this->pageSize, $searchConditions);
-        $robotList = [];
-        foreach ($robotPaginator->getEntityList() as $entity) {
+        $paginator = $this->doctrine->getRepository($this->entityClass)->findAllWithPage($this->pageNum, $this->pageSize, $searchConditions);
+        $list = [];
+        foreach ($paginator->getEntityList() as $entity) {
             /** @var  BaseEntity $entity */
-            $robotList[] = $entity->toArray();
+            $list[] = $entity->toArray();
         }
-        $robotPaginator->setRowsList($robotList);
-        return $robotPaginator->toArray();
+        $paginator->setRowsList($list);
+        return $paginator->toArray();
+    }
+
+    /**
+     * @return array
+     * @throws ReflectionException
+     */
+    public function getAll(): array
+    {
+        # 执行分页查询
+        $entityList = $this->doctrine->getRepository($this->entityClass)->findAllByCriteria();
+        $list = [];
+        foreach ($entityList as $entity) {
+            /** @var  BaseEntity $entity */
+            $list[] = $entity->toArray();
+        }
+        return $list;
     }
 
     /**
@@ -97,11 +113,9 @@ class AdminBaseService extends BaseService
         if (!$this->entity) {
             $this->entity = new $this->entityClass($request);
         }
-
         $this->entity->setFields($request);
         $this->doctrine->getManager()->persist($this->entity);
         $this->doctrine->getManager()->flush();
-
         return $this->entity->toArray();
     }
 
