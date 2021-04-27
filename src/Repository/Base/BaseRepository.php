@@ -36,13 +36,15 @@ class BaseRepository extends ServiceEntityRepository
      * @param int $pageNum
      * @param int $pageSize
      * @param array $conditions
+     * @param string $orderBy
+     * @param string $sort
      * @return PaginatorResult
      */
-    public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = []): PaginatorResult
+    public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = [], string $orderBy = 'createTime', string $sort = 'desc'): PaginatorResult
     {
         $qb = $this->createQueryBuilder($this->alias);
         $qb = $this->createQueryBuilderByConditions($qb, $conditions);
-        $qb->orderBy('b.createTime', 'desc');
+        $qb->orderBy("{$this->alias}.{$orderBy}", $sort);
 
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }
