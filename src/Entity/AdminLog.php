@@ -264,8 +264,8 @@ class AdminLog
         $adminLog->setLogData(json_encode($logData));
         $adminLog->setLogMessage($logMessage);
         $adminLog->setUserId(intval(AdminAuthService::$loginUserId));
-        $adminLog->setRequestUrl($_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-        $adminLog->setClientIp($_SERVER['REMOTE_ADDR']);
+        $adminLog->setRequestUrl(($_SERVER['SERVER_NAME'] ?? '') . ($_SERVER['REQUEST_URI'] ?? ''));
+        $adminLog->setClientIp($_SERVER['REMOTE_ADDR'] ?? '');
         return $adminLog;
     }
 }
