@@ -5,7 +5,6 @@ namespace SymfonyAdmin\Controller;
 
 
 use SymfonyAdmin\Controller\Base\AdminApiController;
-use SymfonyAdmin\Repository\AdminUserRepository;
 use SymfonyAdmin\Request\AdminUserRequest;
 use SymfonyAdmin\Service\AdminUserService;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
@@ -32,16 +31,8 @@ class UserController extends AdminApiController
             $adminAuth = $this->adminAuthService->getLoginAuthInfo();
             $pageNum = intval($request->query->get('pageNum', 1));
             $pageSize = intval($request->query->get('pageSize', 10));
-
-            $conditions = [];
-            foreach (AdminUserRepository::$searchMap as $searchKey => $type) {
-                if ($request->query->get($searchKey)) {
-                    $conditions[$searchKey] = trim($request->query->get($searchKey));
-                }
-            }
-
             # 获取用户菜单列表
-            $menuList = $adminUserService->getListByPage($adminAuth, $pageNum, $pageSize, $conditions);
+            $menuList = $adminUserService->getListByPage($adminAuth, $pageNum, $pageSize);
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }

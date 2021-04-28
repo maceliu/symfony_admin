@@ -5,7 +5,6 @@ namespace SymfonyAdmin\Controller;
 
 
 use SymfonyAdmin\Controller\Base\AdminApiController;
-use SymfonyAdmin\Repository\AdminRoleRepository;
 use SymfonyAdmin\Request\AdminRoleRequest;
 use SymfonyAdmin\Service\AdminMenuService;
 use SymfonyAdmin\Service\AdminRoleService;
@@ -53,16 +52,8 @@ class RoleController extends AdminApiController
 
             $pageNum = intval($request->query->get('pageNum', 1));
             $pageSize = intval($request->query->get('pageSize', 10));
-
-            $conditions = [];
-            foreach (AdminRoleRepository::$searchMap as $searchKey => $type) {
-                if ($request->query->get($searchKey)) {
-                    $conditions[$searchKey] = trim($request->query->get($searchKey));
-                }
-            }
-
             # 获取用户菜单列表
-            $menuList = $adminRoleService->getRoleListWithPage($adminAuth, $pageNum, $pageSize, $conditions);
+            $menuList = $adminRoleService->getRoleListWithPage($adminAuth, $pageNum, $pageSize);
         } catch (Exception $e) {
             return ApiResponse::exception($e, $errorLogger);
         }
