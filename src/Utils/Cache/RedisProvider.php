@@ -21,6 +21,7 @@ class RedisProvider
             self::$connection = RedisAdapter::createConnection($_ENV['REDIS_URL']);
         }
 
+        self::$connection->_prefix($_ENV['APP_NAME']);
         return self::$connection;
     }
 }

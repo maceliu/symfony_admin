@@ -4,6 +4,8 @@
 namespace SymfonyAdmin\Repository\Base;
 
 
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\QueryException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use SymfonyAdmin\Entity\AdminFile;
@@ -38,16 +40,18 @@ class BaseRepository extends ServiceEntityRepository
      * @param int $pageNum
      * @param int $pageSize
      * @param array $conditions
-     * @param string $orderBy
-     * @param string $sort
+     * @param array $orderBy
      * @return PaginatorResult
+     * @throws QueryException
      */
-    public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = [], string $orderBy = 'createTime', string $sort = 'desc'): PaginatorResult
+    public function findAllWithPage(int $pageNum, int $pageSize, array $conditions = [], array $orderBy = []): PaginatorResult
     {
         $qb = $this->createQueryBuilder($this->alias);
         $qb = $this->createQueryBuilderByConditions($qb, $conditions);
-        $qb->orderBy("{$this->alias}.{$orderBy}", $sort);
-
+        # 如果不传入排序数组，则使用默认查询条件
+        $qb->addCriteria(Criteria::create()->orderBy(
+            empty($orderBy) ? ["{$this->alias}.createTime" => Criteria::DESC] : $orderBy
+        ));
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }
 
