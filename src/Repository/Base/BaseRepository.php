@@ -51,7 +51,7 @@ class BaseRepository extends ServiceEntityRepository
         # 如果不传入排序数组，则使用默认查询条件
         $qb->addCriteria(Criteria::create()->orderBy(
             empty($orderBy) ? ["{$this->alias}.createTime" => Criteria::DESC] : $orderBy
-        ))->andWhere($this->baseFilterCriteria);
+        ));
         return new PaginatorResult(new Paginator($qb), $pageNum, $pageSize);
     }
 
