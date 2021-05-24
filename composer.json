@@ -3,7 +3,7 @@
   "description": "A set of admin system interface based on symfony",
   "type": "library",
   "license": "MIT",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "authors": [
     {
       "name": "mace liu",
