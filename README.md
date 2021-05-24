@@ -28,7 +28,7 @@ services:
         exclude: '../vendor/maceliu/symfony_admin/src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
     SymfonyAdmin\Controller\:
-        resource: '../vendor/maceliu/symfony_admin/src//Controller'
+        resource: '../vendor/maceliu/symfony_admin/src/Controller'
         tags: ['controller.service_arguments']
         
 ```

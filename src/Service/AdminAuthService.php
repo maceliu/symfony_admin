@@ -48,6 +48,9 @@ class AdminAuthService extends BaseService
     {
         $loginUserId = intval($this->request->get('_loginUserId', 0));
         $accessToken = trim($this->request->headers->get('authorization', ''));
+        if (empty($accessToken)) {
+            $accessToken = trim($this->request->cookies->get('token', ''));
+        }
         # 登录状态验证
         if ($loginUserId && $accessToken) {
             $token = $this->getRedisClient()->get(Keys::adminUserLogin($loginUserId));
