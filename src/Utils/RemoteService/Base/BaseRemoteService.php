@@ -70,7 +70,8 @@ class BaseRemoteService
         }
 
         $this->httpCode = 200;
-        $this->httpLogger->debug("请求耗时：" . sprintf('%.4f', microtime(true) - $callStartTime) . $this->requestDateFormat() . " | response : $response");
+        $this->httpLogger->info("请求耗时：" . sprintf('%.4f', microtime(true) - $callStartTime) . $this->requestDateFormat());
+        $this->httpLogger->debug("Response : $response");
         return $this->afterResponse($response);
     }
 

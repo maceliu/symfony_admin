@@ -16,7 +16,7 @@ class AliOssRemoteService
      * @return object
      * @throws OssException
      */
-    private static function getInstance(): object
+    private static function getInstance(): OssClient
     {
         if (!self::$instance instanceof OssClient) {
             self::$instance = new OssClient($_ENV['ALI_OSS_KEY'], $_ENV['ALI_OSS_SECRET'], $_ENV['ALI_OSS_HOST']);
