@@ -6,9 +6,7 @@ namespace SymfonyAdmin\Entity\Base;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\ORMException;
 use SymfonyAdmin\Entity\AdminLog;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use SymfonyAdmin\Entity\AdminUser;
 
 trait LogTrait
 {
