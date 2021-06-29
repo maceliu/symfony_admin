@@ -5,10 +5,8 @@ namespace SymfonyAdmin\Entity;
 
 
 use SymfonyAdmin\Entity\Base\BaseEntity;
-use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
 use SymfonyAdmin\Service\AdminLoginService;
-use SymfonyAdmin\Service\AdminUserService;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
 use DateTime;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -27,7 +25,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class AdminUser extends BaseEntity
 {
-    use CommonTrait;
     use LogTrait;
     use SoftDeleteableEntity;
 

@@ -3,7 +3,6 @@
 namespace SymfonyAdmin\Entity;
 
 use SymfonyAdmin\Entity\Base\BaseEntity;
-use SymfonyAdmin\Entity\Base\CommonTrait;
 use SymfonyAdmin\Entity\Base\LogTrait;
 use SymfonyAdmin\Utils\Enum\StatusEnum;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +19,6 @@ use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
  */
 class AdminRoleMenuMap extends BaseEntity
 {
-    use CommonTrait;
     use LogTrait;
     use SoftDeleteableEntity;
 
