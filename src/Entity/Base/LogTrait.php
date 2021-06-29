@@ -10,15 +10,14 @@ use SymfonyAdmin\Entity\AdminUser;
 
 trait LogTrait
 {
+    use CommonTrait;
+
     static $logMessageRules = [];
 
-    public $logMessage = '';
-
-    public $operateType = '';
+    private $logMessage = '';
 
     /**
-     * @ORM\PostPersist
-     * @ORM\PostUpdate
+     * @ORM\PreFlush
      * @param LifecycleEventArgs $args
      */
     public function addModifyLog(LifecycleEventArgs $args)
@@ -29,38 +28,14 @@ trait LogTrait
             # 登录场景
             if (!empty($adminUser->getLoginTime()) && $adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
                 $this->setLogMessage('登录系统');
-                $this->operateType = 'login';
+                $this->entityModifyType = 'login';
             }
         }
 
-        $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getOperateType(), $this->toArray(false), $this->getLogMessage());
+        $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getEntityModifyType(), $this->toArray(false), $this->getLogMessage());
         $entityManager = $args->getObjectManager();
         $entityManager->persist($adminLog);
         $entityManager->flush();
-    }
-
-    /**
-     * @ORM\PreRemove
-     * @param LifecycleEventArgs $args
-     */
-    public function preRemove(LifecycleEventArgs $args)
-    {
-        $adminLog = AdminLog::create(self::class, $this->getDataId(), 'delete', $this->toArray(false), $this->getLogMessage());
-        $entityManager = $args->getObjectManager();
-        $entityManager->persist($adminLog);
-        $entityManager->flush();
-    }
-
-    protected function getOperateType(): string
-    {
-        # 创建时间和更新时间是否一致 一致为创建  不一致为更新
-        if (!empty($this->operateType)) {
-            return $this->operateType;
-        } elseif ($this->getCreateTime()->getTimestamp() == $this->getUpdateTime()->getTimestamp()) {
-            return 'create';
-        } else {
-            return 'update';
-        }
     }
 
     protected function getDataId(): int

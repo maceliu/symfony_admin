@@ -7,27 +7,27 @@ namespace SymfonyAdmin\Entity\Base;
 use DateTime;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use SymfonyAdmin\Utils\Enum\OperateEnum;
+use SymfonyAdmin\Utils\Enum\EntityOperateTypeEnum;
 
 trait CommonTrait
 {
     /** @var string */
-    private $operateStatus = OperateEnum::NONE;
+    private $entityModifyType = EntityOperateTypeEnum::NONE;
 
     /**
      * @return string
      */
-    public function getOperateStatus(): string
+    public function getEntityModifyType(): string
     {
-        return $this->operateStatus;
+        return $this->entityModifyType;
     }
 
     /**
-     * @param string $operateStatus
+     * @param string $entityModifyType
      */
-    public function setOperateStatus(string $operateStatus): void
+    public function setEntityModifyType(string $entityModifyType): void
     {
-        $this->operateStatus = $operateStatus;
+        $this->entityModifyType = $entityModifyType;
     }
 
     /**
@@ -38,7 +38,7 @@ trait CommonTrait
     {
         $this->setUpdateTime(new DateTime());
         if (!empty($event->getEntityChangeSet())) {
-            $this->operateStatus = OperateEnum::UPDATE;
+            $this->entityModifyType = EntityOperateTypeEnum::UPDATE;
         }
     }
 
@@ -48,7 +48,15 @@ trait CommonTrait
     public function postPersist()
     {
         if ($this->getCreateTime()->getTimestamp() == $this->getUpdateTime()->getTimestamp()) {
-            $this->operateStatus = OperateEnum::CREATE;
+            $this->entityModifyType = EntityOperateTypeEnum::CREATE;
         }
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function preRemove()
+    {
+        $this->entityModifyType = EntityOperateTypeEnum::DELETE;
     }
 }
