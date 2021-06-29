@@ -26,7 +26,6 @@ trait LogTrait
         $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getEntityModifyType(), $this->toArray(false), $this->getLogMessage());
         $entityManager = $args->getEntityManager();
         $entityManager->persist($adminLog);
-        $entityManager->flush();
     }
 
     protected function getDataId(): int
