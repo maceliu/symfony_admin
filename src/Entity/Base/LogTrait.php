@@ -3,10 +3,11 @@
 namespace SymfonyAdmin\Entity\Base;
 
 
-use Doctrine\ORM\Event\PreFlushEventArgs;
-use Doctrine\ORM\ORMException;
 use SymfonyAdmin\Entity\AdminLog;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use SymfonyAdmin\Entity\AdminUser;
+use SymfonyAdmin\Utils\Enum\EntityOperateTypeEnum;
 
 trait LogTrait
 {
@@ -17,17 +18,35 @@ trait LogTrait
     private $logMessage = '';
 
     /**
-     * @ORM\PreFlush
-     * @param PreFlushEventArgs $args
-     * @throws ORMException
+     * @ORM\PostUpdate
+     * @ORM\PostPersist
+     * @param LifecycleEventArgs $args
      */
-    public function addModifyLog(PreFlushEventArgs $args)
+    public function addModifyLog(LifecycleEventArgs $args)
     {
+        if ($this->getCreateTime()->getTimestamp() == $this->getUpdateTime()->getTimestamp()) {
+            $this->entityModifyType = EntityOperateTypeEnum::CREATE;
+        }
+
+        if ($args->getObject() instanceof AdminUser) {
+            /** @var AdminUser $adminUser */
+            $adminUser = $args->getObject();
+            # 登录场景
+            if (!empty($adminUser->getLoginTime()) && $adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
+                $this->setLogMessage('登录系统');
+                $this->entityModifyType = 'login';
+            }
+        }
+
         $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getEntityModifyType(), $this->toArray(false), $this->getLogMessage());
-        $entityManager = $args->getEntityManager();
+        $entityManager = $args->getObjectManager();
         $entityManager->persist($adminLog);
+        $entityManager->flush();
     }
 
+    /**
+     * @return int
+     */
     protected function getDataId(): int
     {
         if (method_exists($this, 'getId')) {
@@ -47,6 +66,9 @@ trait LogTrait
         $this->logMessage = $logMessage;
     }
 
+    /**
+     * @return string
+     */
     protected function getLogMessage(): string
     {
         $methodName = empty(self::$logMessageRules[self::class]) ? '' : self::$logMessageRules[self::class];
