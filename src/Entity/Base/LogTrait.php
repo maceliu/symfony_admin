@@ -3,6 +3,8 @@
 namespace SymfonyAdmin\Entity\Base;
 
 
+use Doctrine\ORM\Event\PreFlushEventArgs;
+use Doctrine\ORM\ORMException;
 use SymfonyAdmin\Entity\AdminLog;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,22 +20,13 @@ trait LogTrait
 
     /**
      * @ORM\PreFlush
-     * @param LifecycleEventArgs $args
+     * @param PreFlushEventArgs $args
+     * @throws ORMException
      */
-    public function addModifyLog(LifecycleEventArgs $args)
+    public function addModifyLog(PreFlushEventArgs $args)
     {
-        if ($args->getObject() instanceof AdminUser) {
-            /** @var AdminUser $adminUser */
-            $adminUser = $args->getObject();
-            # 登录场景
-            if (!empty($adminUser->getLoginTime()) && $adminUser->getLoginTime()->getTimestamp() == $adminUser->getUpdateTime()->getTimestamp()) {
-                $this->setLogMessage('登录系统');
-                $this->entityModifyType = 'login';
-            }
-        }
-
         $adminLog = AdminLog::create(self::class, $this->getDataId(), $this->getEntityModifyType(), $this->toArray(false), $this->getLogMessage());
-        $entityManager = $args->getObjectManager();
+        $entityManager = $args->getEntityManager();
         $entityManager->persist($adminLog);
         $entityManager->flush();
     }
