@@ -9,5 +9,5 @@ namespace SymfonyAdmin\Exception\Base;
  */
 class ErrorException extends BaseException
 {
-    protected $code = 20000;
+    protected $code = 20;
 }

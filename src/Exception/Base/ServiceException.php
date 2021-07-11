@@ -8,5 +8,5 @@ namespace SymfonyAdmin\Exception\Base;
  */
 class ServiceException extends BaseException
 {
-    protected $code = 10000;
+    protected $code = 10;
 }
