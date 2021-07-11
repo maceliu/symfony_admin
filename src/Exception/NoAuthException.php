@@ -13,5 +13,5 @@ use SymfonyAdmin\Exception\Base\ServiceException;
  */
 class NoAuthException extends ServiceException
 {
-
+    protected $code = 100500;
 }
