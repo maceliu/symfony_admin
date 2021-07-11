@@ -8,7 +8,7 @@ use SymfonyAdmin\Exception\Base\ServiceException;
 
 class RedirectException extends ServiceException
 {
-    protected $code = 100700;
+    protected $code = 10700;
 
     private $goPath = '/';
 

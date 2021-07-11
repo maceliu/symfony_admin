@@ -8,5 +8,5 @@ use SymfonyAdmin\Exception\Base\ServiceException;
 
 class NotLoginException extends ServiceException
 {
-    protected $code = 100900;
+    protected $code = 10900;
 }

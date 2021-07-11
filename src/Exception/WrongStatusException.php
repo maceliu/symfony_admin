@@ -8,5 +8,5 @@ use SymfonyAdmin\Exception\Base\ServiceException;
 
 class WrongStatusException extends ServiceException
 {
-    protected $code = 100800;
+    protected $code = 10800;
 }

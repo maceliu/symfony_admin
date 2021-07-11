@@ -8,5 +8,5 @@ use SymfonyAdmin\Exception\Base\ServiceException;
 
 class NotExistException extends ServiceException
 {
-    protected $code = 100600;
+    protected $code = 10600;
 }

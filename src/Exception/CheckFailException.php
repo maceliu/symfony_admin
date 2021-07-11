@@ -8,5 +8,5 @@ use SymfonyAdmin\Exception\Base\ServiceException;
 
 class CheckFailException extends ServiceException
 {
-    protected $code = 100100;
+    protected $code = 10100;
 }
