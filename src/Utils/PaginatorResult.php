@@ -53,7 +53,7 @@ class PaginatorResult
             if (empty($poor)) {
                 $this->setTotalPage(ceil($paginator->count() / $pageSize));
             } else {
-                $this->setTotalPage(ceil(($paginator->count() - $poor) / $pageSize));
+                $this->setTotalPage(ceil(($paginator->count() + $poor) / $pageSize));
             }
 
             $this->setPageSize($pageSize);
