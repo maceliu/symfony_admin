@@ -45,7 +45,7 @@ class PaginatorResult
                 ->setMaxResults($pageSize); // Limit
         } else {
             $paginator->getQuery()
-                ->setFirstResult(max($pageSize * ($pageNum - 1) + $poor, 0)) // Offset
+                ->setFirstResult(max($pageSize * ($pageNum - 1) - $poor, 0)) // Offset
                 ->setMaxResults($pageSize); // Limit
         }
         if ($pageNum == 1) {
