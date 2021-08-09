@@ -34,7 +34,7 @@ class PaginatorResult
      * @param int $pageSize
      * @param int $poor
      */
-    public function __construct(Paginator $paginator, int $pageNum = 10, int $pageSize = 1, $poor = 0)
+    public function __construct(Paginator $paginator, int $pageNum = 1, int $pageSize = 10, int $poor = 0)
     {
         if ($pageNum == 1) {
             $pageSize -= $poor;
