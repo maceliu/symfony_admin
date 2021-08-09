@@ -37,7 +37,7 @@ class PaginatorResult
     public function __construct(Paginator $paginator, int $pageNum = 10, int $pageSize = 1, $poor = 0)
     {
         if ($pageNum == 1) {
-            $pageSize += $poor;
+            $pageSize -= $poor;
         }
         if (empty($poor)) {
             $paginator->getQuery()
@@ -48,18 +48,19 @@ class PaginatorResult
                 ->setFirstResult(max($pageSize * ($pageNum - 1) + $poor, 0)) // Offset
                 ->setMaxResults($pageSize); // Limit
         }
-        if ($paginator) {
-            $this->setRowsTotal($paginator->count());
-            if (empty($poor)) {
-                $this->setTotalPage(ceil($paginator->count() / $pageSize));
-            } else {
-                $this->setTotalPage(ceil(($paginator->count() + $poor) / $pageSize));
-            }
-
-            $this->setPageSize($pageSize);
-            $this->setPageNum($pageNum);
-            $this->setEntityList($paginator->getQuery()->getResult());
+        if ($pageNum == 1) {
+            $pageSize += $poor;
         }
+        $this->setRowsTotal($paginator->count());
+        if (empty($poor)) {
+            $this->setTotalPage(ceil($paginator->count() / $pageSize));
+        } else {
+            $this->setTotalPage(ceil(($paginator->count() + $poor) / $pageSize));
+        }
+
+        $this->setPageSize($pageSize);
+        $this->setPageNum($pageNum);
+        $this->setEntityList($paginator->getQuery()->getResult());
     }
 
     /**
