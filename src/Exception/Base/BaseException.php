@@ -17,4 +17,10 @@ class BaseException extends Exception
     {
         parent::__construct($message, $this->baseCode . $code, $previous);
     }
+
+
+    public function setExceptionCode($code)
+    {
+        $this->code = $this->baseCode . $code;
+    }
 }
