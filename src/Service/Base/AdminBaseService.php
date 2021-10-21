@@ -71,7 +71,7 @@ class AdminBaseService extends BaseService
         # 搜索条件获取
         $searchConditions = [];
         foreach ($this->doctrine->getRepository($this->entityClass)->getSearchMap() as $searchKey => $type) {
-            if ($this->request->query->get($searchKey)) {
+            if ($this->request->query->get($searchKey) || is_string($this->request->query->get($searchKey))) {
                 $searchConditions[$searchKey] = trim($this->request->query->get($searchKey));
             }
         }
