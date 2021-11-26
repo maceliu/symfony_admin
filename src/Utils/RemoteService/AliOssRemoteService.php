@@ -52,4 +52,16 @@ class AliOssRemoteService
     {
         return self::getInstance()->deleteObject($_ENV['ALI_OSS_BUCKET_NAME'], $object);
     }
+
+    /**
+     * @param $object
+     * @param $content
+     * @param null $options
+     * @return null
+     * @throws OssException
+     */
+    public static function putObject($object,$content,$options = null)
+    {
+        return self::getInstance()->putObject($_ENV['ALI_OSS_BUCKET_NAME'], $object,$content,$options);
+    }
 }
