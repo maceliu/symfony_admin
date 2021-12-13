@@ -4,6 +4,7 @@ namespace SymfonyAdmin\Entity\Base;
 
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use ReflectionException;
 use SymfonyAdmin\Entity\AdminLog;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyAdmin\Entity\AdminUser;
@@ -21,6 +22,7 @@ trait LogTrait
      * @ORM\PostUpdate
      * @ORM\PostPersist
      * @param LifecycleEventArgs $args
+     * @throws ReflectionException
      */
     public function addModifyLog(LifecycleEventArgs $args)
     {
