@@ -3,8 +3,8 @@
 namespace SymfonyAdmin\Entity\Base;
 
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use SymfonyAdmin\Entity\AdminLog;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyAdmin\Entity\AdminUser;
 use SymfonyAdmin\Utils\Enum\EntityOperateTypeEnum;
