@@ -66,7 +66,7 @@ class BaseRemoteService
     protected function beforeRequest()
     {
         if (!empty($this->preQueryParam)) {
-            $this->options[RequestOptions::QUERY] = array_merge($this->options[RequestOptions::QUERY], $this->preQueryParam);
+            $this->options[RequestOptions::QUERY] = array_merge($this->options[RequestOptions::QUERY] ?? [], $this->preQueryParam);
         }
     }
 
