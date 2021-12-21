@@ -11,64 +11,85 @@ use Psr\Log\LoggerInterface;
 
 class BaseRemoteService
 {
+    /** @var string 接口地址 */
+    private $remoteUrl;
+
+    /** @var string 接口域名 */
+    private $remoteHost;
+
+    /** @var string 接口路径 */
+    private $remotePath;
+
+    /** @var array 请求头 */
+    private $options;
+
+    /** @var string 请求方式 */
+    private $method;
+
+    /** @var array 通用请求头 */
+    protected $preQueryParam;
+
+    /** @var Client guzzle请求句柄 */
     private $client;
+
+    /** @var string 响应http状态码 */
+    private $httpCode;
 
     private $httpErrorMsg;
 
     private $returnMsg;
 
-    private $httpCode;
-
-    private $url;
-
-    private $baseUri;
-
-    private $options;
-
-    private $method;
-
     public $httpLogger;
 
-    protected $preQueryParam;
 
     /**
      * @desc 构造函数
-     * @param string $baseUri
+     * @param string $remoteHost
      * @param LoggerInterface $httpLogger
      * @param int $timeout
      */
-    public function __construct(string $baseUri, LoggerInterface $httpLogger, int $timeout = 5)
+    public function __construct(string $remoteHost, LoggerInterface $httpLogger, int $timeout = 5)
     {
-        $this->baseUri = $baseUri;
+        $this->remoteHost = $remoteHost;
         $this->httpLogger = $httpLogger;
 
         $this->client = new Client([
-            'base_uri' => $baseUri,
+            'base_uri' => $remoteHost,
             'timeout' => $timeout
         ]);
     }
 
     /**
+     * 请求前预处理函数
+     * @return void
+     */
+    protected function beforeRequest()
+    {
+        if (!empty($this->preQueryParam)) {
+            $this->options[RequestOptions::QUERY] = array_merge($this->options[RequestOptions::QUERY], $this->preQueryParam);
+        }
+    }
+
+    /**
      * @desc 调用接口发起请求，并获取指定格式响应内容
      * @param string $method
-     * @param string $url
+     * @param string $remotePath
      * @param array $options
      * @return array
      * @throws ErrorException|GuzzleException
      */
-    public function getResponseContent(string $method, string $url, array $options): array
+    public function getResponseContent(string $method, string $remotePath, array $options): array
     {
-        $this->url = $this->baseUri . $url;
+        $this->remotePath = $remotePath;
+        $this->remoteUrl = $this->remoteHost . $remotePath;
         $this->options = $options;
         $this->method = $method;
         $callStartTime = microtime(true);
 
-        if (!empty($this->preQueryParam)) {
-            $options[RequestOptions::QUERY] = array_merge($options[RequestOptions::QUERY], $this->preQueryParam);
-        }
+        $this->beforeRequest();
 
         try {
-            $response = $this->client->request($method, $url, $options)->getBody()->getContents();
+            $response = $this->client->request($this->method, $this->remotePath, $this->options)->getBody()->getContents();
         } catch (Exception $e) {
             $this->httpCode = $e->getCode();
             $this->setHttpErrorMsg($e->getMessage());
@@ -126,7 +147,7 @@ class BaseRemoteService
 
     private function requestDateFormat(): string
     {
-        $r = ' | url:' . $this->url;
+        $r = ' | url:' . $this->remoteUrl;
         $r .= ' | method:' . $this->method;
         return $r . ' | options:' . json_encode($this->options);
     }
