@@ -12,19 +12,19 @@ use Psr\Log\LoggerInterface;
 class BaseRemoteService
 {
     /** @var string 接口地址 */
-    private $remoteUrl;
+    protected $remoteUrl;
 
     /** @var string 接口域名 */
-    private $remoteHost;
+    protected $remoteHost;
 
     /** @var string 接口路径 */
-    private $remotePath;
+    protected $remotePath;
 
     /** @var array 请求头 */
-    private $options;
+    protected $options;
 
     /** @var string 请求方式 */
-    private $method;
+    protected $method;
 
     /** @var array 通用请求头 */
     protected $preQueryParam;
