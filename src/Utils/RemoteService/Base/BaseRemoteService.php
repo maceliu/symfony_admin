@@ -3,6 +3,7 @@
 namespace SymfonyAdmin\Utils\RemoteService\Base;
 
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use SymfonyAdmin\Exception\Base\ErrorException;
 use Exception;
 use GuzzleHttp\Client;
@@ -28,13 +29,15 @@ class BaseRemoteService
 
     public $httpLogger;
 
+    protected $preQueryParam;
+
     /**
      * @desc 构造函数
      * @param string $baseUri
      * @param LoggerInterface $httpLogger
      * @param int $timeout
      */
-    public function __construct(string $baseUri, LoggerInterface $httpLogger, $timeout = 5)
+    public function __construct(string $baseUri, LoggerInterface $httpLogger, int $timeout = 5)
     {
         $this->baseUri = $baseUri;
         $this->httpLogger = $httpLogger;
@@ -59,6 +62,10 @@ class BaseRemoteService
         $this->options = $options;
         $this->method = $method;
         $callStartTime = microtime(true);
+
+        if (!empty($this->preQueryParam)) {
+            $options[RequestOptions::QUERY] = array_merge($options[RequestOptions::QUERY], $this->preQueryParam);
+        }
 
         try {
             $response = $this->client->request($method, $url, $options)->getBody()->getContents();
@@ -119,8 +126,7 @@ class BaseRemoteService
 
     private function requestDateFormat(): string
     {
-        $r = '';
-        $r .= ' | url:' . $this->url;
+        $r = ' | url:' . $this->url;
         $r .= ' | method:' . $this->method;
         return $r . ' | options:' . json_encode($this->options);
     }
